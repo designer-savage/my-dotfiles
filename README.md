@@ -1,6 +1,6 @@
-# Hyprland Setup
+# My Dotfiles
 
-Personal Arch Linux configuration with Hyprland and Quickshell for Lenovo ThinkBook 15 G3 ACL.
+Personal Arch Linux configuration with Hyprland and Quickshell.
 
 ## Screenshots
 
@@ -9,16 +9,6 @@ Personal Arch Linux configuration with Hyprland and Quickshell for Lenovo ThinkB
 ![Desktop 3](screenshots/screen-3.png)
 ![Desktop 4](screenshots/screen-4.png)
 ![Desktop 5](screenshots/screen-5.png)
-
-## Hardware & System
-
-- **Laptop**: Lenovo ThinkBook 15 G3 ACL
-- **CPU**: AMD Ryzen 7 5700U @ 4.37GHz (16 threads)
-- **RAM**: ~13.5 GB
-- **OS**: Arch Linux (kernel 6.19.9)
-- **WM**: Hyprland 0.54.2
-- **Terminal**: Kitty 0.46.2
-- **Shell**: Bash + Starship prompt
 
 ## Main Components
 
@@ -73,8 +63,8 @@ Personal Arch Linux configuration with Hyprland and Quickshell for Lenovo ThinkB
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/designer-savage/hyprland-setup.git
-cd hyprland-setup
+git clone https://github.com/designer-savage/my-dotfiles.git
+cd my-dotfiles
 ```
 
 ### 2. Install packages
@@ -104,7 +94,6 @@ After installation, restart Hyprland or re-login.
 
 - Modular Hyprland config structure (split into separate files)
 - Quickshell with QML for flexible status bar customization
-- AMD GPU support (AMDGPU drivers, Vulkan)
 - Configured power management (TLP, cpupower)
 - Pipewire for audio
 - NetworkManager + iwd for networking
