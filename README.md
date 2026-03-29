@@ -8,6 +8,7 @@ Personal Arch Linux configuration with Hyprland and Quickshell for Lenovo ThinkB
 ![Desktop 2](screenshots/screen-2.png)
 ![Desktop 3](screenshots/screen-3.png)
 ![Desktop 4](screenshots/screen-4.png)
+![Desktop 5](screenshots/screen-5.png)
 
 ## Hardware & System
 
