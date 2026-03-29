@@ -1,0 +1,11 @@
+# Игнорируем временные файлы и бэкапы
+*.bak
+*.backup.*
+.DS_Store
+
+# Игнорируем состояние quickshell
+.config/quickshell/state/
+.config/quickshell/app_usage.json
+
+# Игнорируем бэкапы hyprland
+.config/hypr/*.bak.*
