@@ -2,6 +2,13 @@
 
 Персональная конфигурация Arch Linux с Hyprland и Quickshell для Lenovo ThinkBook 15 G3 ACL.
 
+## Скриншоты
+
+![Desktop 1](screenshots/screen-1.png)
+![Desktop 2](screenshots/screen-2.png)
+![Desktop 3](screenshots/screen-3.png)
+![Desktop 4](screenshots/screen-4.png)
+
 ## Железо и система
 
 - **Ноутбук**: Lenovo ThinkBook 15 G3 ACL
