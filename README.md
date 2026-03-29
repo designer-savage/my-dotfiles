@@ -1,126 +1,126 @@
 # Hyprland Setup
 
-Персональная конфигурация Arch Linux с Hyprland и Quickshell для Lenovo ThinkBook 15 G3 ACL.
+Personal Arch Linux configuration with Hyprland and Quickshell for Lenovo ThinkBook 15 G3 ACL.
 
-## Скриншоты
+## Screenshots
 
 ![Desktop 1](screenshots/screen-1.png)
 ![Desktop 2](screenshots/screen-2.png)
 ![Desktop 3](screenshots/screen-3.png)
 ![Desktop 4](screenshots/screen-4.png)
 
-## Железо и система
+## Hardware & System
 
-- **Ноутбук**: Lenovo ThinkBook 15 G3 ACL
-- **CPU**: AMD Ryzen 7 5700U @ 4.37GHz (16 потоков)
+- **Laptop**: Lenovo ThinkBook 15 G3 ACL
+- **CPU**: AMD Ryzen 7 5700U @ 4.37GHz (16 threads)
 - **RAM**: ~13.5 GB
 - **OS**: Arch Linux (kernel 6.19.9)
 - **WM**: Hyprland 0.54.2
 - **Terminal**: Kitty 0.46.2
 - **Shell**: Bash + Starship prompt
 
-## Основные компоненты
+## Main Components
 
-### Hyprland экосистема
-- **hyprland** — тайловый Wayland-композитор
-- **hyprlock** — экран блокировки
-- **hypridle** — управление idle-состоянием
-- **hyprpaper** — менеджер обоев
-- **hyprpicker** — пипетка для выбора цветов
-- **hyprshot** — утилита для скриншотов
+### Hyprland Ecosystem
+- **hyprland** — tiling Wayland compositor
+- **hyprlock** — lock screen
+- **hypridle** — idle management
+- **hyprpaper** — wallpaper manager
+- **hyprpicker** — color picker
+- **hyprshot** — screenshot utility
 
-### UI и бары
-- **quickshell** — статус-бар на QML (основной)
-- **waybar** — альтернативный бар (резервный)
-- **swaync** — центр уведомлений
-- **rofi/wofi** — лаунчеры приложений
+### UI & Bars
+- **quickshell** — QML-based status bar (primary)
+- **waybar** — alternative bar (backup)
+- **swaync** — notification center
+- **rofi/wofi** — application launchers
 
-### Приложения
-- **kitty** — GPU-ускоренный терминал
-- **firefox** — браузер
-- **dolphin/thunar** — файловые менеджеры
-- **neovim/vim** — редакторы
+### Applications
+- **kitty** — GPU-accelerated terminal
+- **firefox** — web browser
+- **dolphin/thunar** — file managers
+- **neovim/vim** — text editors
 - **visual-studio-code** — IDE
-- **obs-studio** — запись экрана
-- **mpv/celluloid** — видеоплеер
+- **obs-studio** — screen recording
+- **mpv/celluloid** — video player
 
-### Утилиты
-- **paru/yay** — AUR-хелперы
-- **lazygit** — TUI для Git
-- **bottom/htop** — мониторинг системы
-- **fastfetch** — системная информация
-- **eza** — современная замена ls
-- **brightnessctl** — управление яркостью
-- **blueman** — Bluetooth-менеджер
+### Utilities
+- **paru/yay** — AUR helpers
+- **lazygit** — Git TUI
+- **bottom/htop** — system monitoring
+- **fastfetch** — system information
+- **eza** — modern ls replacement
+- **brightnessctl** — brightness control
+- **blueman** — Bluetooth manager
 
-## Структура проекта
+## Project Structure
 
 ```
 .
 ├── .config/
-│   ├── hypr/           # Модульные конфиги Hyprland
-│   ├── quickshell/     # QML-конфиг статус-бара
-│   ├── kitty/          # Конфиг терминала
-│   └── waybar/         # Альтернативный бар
-├── install.sh          # Скрипт установки конфигов
-├── packages.txt        # Список установленных пакетов
+│   ├── hypr/           # Modular Hyprland configs
+│   ├── quickshell/     # QML status bar config
+│   ├── kitty/          # Terminal config
+│   └── waybar/         # Alternative bar
+├── install.sh          # Config installation script
+├── packages.txt        # List of installed packages
 └── README.md
 ```
 
-## Установка
+## Installation
 
-### 1. Клонирование репозитория
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/designer-savage/hyprland-setup.git
 cd hyprland-setup
 ```
 
-### 2. Установка пакетов
+### 2. Install packages
 
-Установить все пакеты из `packages.txt`:
+Install all packages from `packages.txt`:
 
 ```bash
 yay -S --needed $(cat packages.txt | awk '{print $1}')
 ```
 
-Или выборочно установить только нужные компоненты.
+Or selectively install only the components you need.
 
-### 3. Установка конфигов
+### 3. Install configs
 
-Скрипт создаст симлинки на конфиги (существующие будут сохранены в бэкапы):
+The script will create symlinks to configs (existing ones will be backed up):
 
 ```bash
 chmod +x install.sh
 ./install.sh
 ```
 
-### 4. Перезапуск Hyprland
+### 4. Restart Hyprland
 
-После установки перезапусти Hyprland или перелогинься.
+After installation, restart Hyprland or re-login.
 
-## Особенности
+## Features
 
-- Модульная структура конфигов Hyprland (разделены по файлам)
-- Quickshell на QML для гибкой настройки статус-бара
-- Поддержка AMD GPU (драйверы AMDGPU, Vulkan)
-- Настроенный power management (TLP, cpupower)
-- Pipewire для аудио
-- NetworkManager + iwd для сети
-- Автоматические бэкапы при установке конфигов
+- Modular Hyprland config structure (split into separate files)
+- Quickshell with QML for flexible status bar customization
+- AMD GPU support (AMDGPU drivers, Vulkan)
+- Configured power management (TLP, cpupower)
+- Pipewire for audio
+- NetworkManager + iwd for networking
+- Automatic backups when installing configs
 
-## Полезные биндинги
+## Key Bindings
 
-Основные биндинги настроены в `.config/hypr/binds.conf`. Примеры:
+Main keybindings are configured in `.config/hypr/binds.conf`. Examples:
 
-- `Super + Q` — закрыть окно
-- `Super + Return` — открыть терминал
-- `Super + D` — лаунчер приложений
-- `Super + F` — фуллскрин
-- `Super + [1-9]` — переключение воркспейсов
+- `Super + Q` — close window
+- `Super + Return` — open terminal
+- `Super + D` — application launcher
+- `Super + F` — fullscreen
+- `Super + [1-9]` — switch workspaces
 
-Полный список смотри в конфиге.
+See the config for the full list.
 
-## Лицензия
+## License
 
 MIT
