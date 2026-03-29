@@ -2,6 +2,7 @@
 *.bak
 *.backup.*
 .DS_Store
+CLAUDE.md
 
 # Игнорируем состояние quickshell
 .config/quickshell/state/
