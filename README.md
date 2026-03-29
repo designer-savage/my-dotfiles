@@ -1,8 +1,8 @@
-# My Dotfiles 📂
+# My Dotfiles
 
 Personal Arch Linux configuration with Hyprland and Quickshell. 🐧
 
-## Screenshots 📸
+## Screenshots
 
 ![Desktop 1](screenshots/screen-1.png)
 ![Desktop 2](screenshots/screen-2.png)
@@ -10,9 +10,9 @@ Personal Arch Linux configuration with Hyprland and Quickshell. 🐧
 ![Desktop 4](screenshots/screen-4.png)
 ![Desktop 5](screenshots/screen-5.png)
 
-## Main Components 🔧
+## Main Components
 
-### Hyprland Ecosystem 🖥️
+### Hyprland Ecosystem
 - **hyprland** — tiling Wayland compositor 🖼️
 - **hyprlock** — lock screen 🔒
 - **hypridle** — idle management 😴
@@ -20,13 +20,13 @@ Personal Arch Linux configuration with Hyprland and Quickshell. 🐧
 - **hyprpicker** — color picker 🎨
 - **hyprshot** — screenshot utility 📸
 
-### UI & Bars 🖼️
+### UI & Bars
 - **quickshell** — QML-based status bar (primary) 📊
 - **waybar** — alternative bar (backup) 📊
 - **swaync** — notification center 🔔
 - **rofi/wofi** — application launchers 🚀
 
-### Applications 💻
+### Applications
 - **kitty** — GPU-accelerated terminal 🐱
 - **firefox** — web browser 🌐
 - **dolphin/thunar** — file managers 📁
@@ -35,7 +35,7 @@ Personal Arch Linux configuration with Hyprland and Quickshell. 🐧
 - **obs-studio** — screen recording 🎥
 - **mpv/celluloid** — video player 🎬
 
-### Utilities 🛠️
+### Utilities
 - **paru/yay** — AUR helpers 📦
 - **lazygit** — Git TUI 🔧
 - **bottom/htop** — system monitoring 📊
@@ -44,7 +44,7 @@ Personal Arch Linux configuration with Hyprland and Quickshell. 🐧
 - **brightnessctl** — brightness control ☀️
 - **blueman** — Bluetooth manager 📶
 
-## Project Structure 🗂️
+## Project Structure
 
 ```
 .
@@ -58,16 +58,16 @@ Personal Arch Linux configuration with Hyprland and Quickshell. 🐧
 └── README.md
 ```
 
-## Installation 🚀
+## Installation
 
-### 1. Clone the repository 📥
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/designer-savage/my-dotfiles.git
 cd my-dotfiles
 ```
 
-### 2. Install packages 📦
+### 2. Install packages
 
 Install all packages from `packages.txt`:
 
@@ -77,7 +77,7 @@ yay -S --needed $(cat packages.txt | awk '{print $1}')
 
 Or selectively install only the components you need.
 
-### 3. Install configs ⚙️
+### 3. Install configs
 
 The script will create symlinks to configs (existing ones will be backed up):
 
@@ -86,11 +86,11 @@ chmod +x install.sh
 ./install.sh
 ```
 
-### 4. Restart Hyprland 🔄
+### 4. Restart Hyprland
 
 After installation, restart Hyprland or re-login.
 
-## Features ✨
+## Features
 
 - Modular Hyprland config structure (split into separate files) 🧩
 - Quickshell with QML for flexible status bar customization 🎨
@@ -99,7 +99,7 @@ After installation, restart Hyprland or re-login.
 - NetworkManager + iwd for networking 🌐
 - Automatic backups when installing configs 💾
 
-## Key Bindings ⌨️
+## Key Bindings
 
 Main keybindings are configured in `.config/hypr/binds.conf`. Examples:
 
@@ -110,7 +110,3 @@ Main keybindings are configured in `.config/hypr/binds.conf`. Examples:
 - `Super + [1-9]` — switch workspaces 🔄
 
 See the config for the full list.
-
-## License 📄
-
-MIT
