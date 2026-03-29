@@ -105,7 +105,7 @@ Main keybindings are configured in `.config/hypr/binds.conf`. Examples:
 
 - `Super + Q` — close window ❌
 - `Super + Return` — open terminal 🖥️
-- `Super + D` — application launcher 🚀
+- `Super + R` — application launcher 🚀
 - `Super + F` — fullscreen 🔍
 - `Super + [1-9]` — switch workspaces 🔄
 
