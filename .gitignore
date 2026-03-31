@@ -3,6 +3,7 @@
 *.backup.*
 .DS_Store
 CLAUDE.md
+QWEN.md
 
 # Игнорируем состояние quickshell
 .config/quickshell/state/
