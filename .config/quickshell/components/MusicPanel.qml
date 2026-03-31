@@ -4,25 +4,27 @@ import Quickshell.Wayland
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-import Qt5Compat.GraphicalEffects
+import QtQuick.Effects
 
 PanelWindow {
     id: musicPanel
     visible: true
-    exclusionMode: ExclusionMode.Ignore
     anchors { top: true; left: true; right: true }
     margins { top: root.musicVisible ? 50 : -250; left: 0; right: 0 }
     implicitWidth: 400
     implicitHeight: 188
     color: "transparent"
     focusable: true
+    WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.keyboardFocus: root.musicVisible ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
+    exclusionMode: ExclusionMode.Ignore
     Behavior on margins.top { NumberAnimation { duration: 300; easing.type: Easing.OutCubic } }
 
     property string playerStatus: "Stopped"
     property string trackTitle: ""
     property string trackArtist: ""
     property string artUrl: ""
+    property string artLocalPath: ""
     property real position: 0
     property real lastPosition: 0
     property real length: 0
@@ -228,34 +230,34 @@ PanelWindow {
                             id: artMask
                             anchors.fill: parent
                             radius: 12
-                            visible: false
+                            opacity: 0
+                            layer.enabled: true
                         }
 
-                        Image {
-                            id: artImage
+                        Item {
                             anchors.fill: parent
-                            source: musicPanel.artUrl !== "" ? musicPanel.artUrl : ""
-                            fillMode: Image.PreserveAspectCrop
-                            smooth: true
-                            asynchronous: true
-                            cache: true
-                            opacity: 1
-                            visible: false
-                        }
-
-                        OpacityMask {
-                            anchors.fill: parent
-                            source: artImage
-                            maskSource: artMask
-                            cached: false
-                            visible: musicPanel.artUrl !== "" && artImage.status === Image.Ready
+                            visible: musicPanel.artLocalPath !== ""
+                            layer.enabled: true
+                            layer.effect: MultiEffect {
+                                maskEnabled: true
+                                maskSource: artMask
+                            }
+                            Image {
+                                id: artImage
+                                anchors.fill: parent
+                                source: musicPanel.artLocalPath !== "" ? "file://" + musicPanel.artLocalPath : ""
+                                fillMode: Image.PreserveAspectCrop
+                                smooth: true
+                                asynchronous: true
+                                cache: false
+                            }
                         }
 
                         Rectangle {
                             anchors.fill: parent
                             radius: 12
                             color: Qt.rgba(0, 0, 0, 0.3)
-                            visible: musicPanel.artUrl === "" || artImage.status !== Image.Ready
+                            visible: musicPanel.artLocalPath === ""
 
                             Text {
                                 anchors.centerIn: parent
@@ -375,8 +377,25 @@ PanelWindow {
     Process {
         id: musicArtProc
         command: ["playerctl", "metadata", "mpris:artUrl"]
-        stdout: SplitParser { onRead: data => musicPanel.artUrl = data.trim() }
-        onExited: code => { if (code !== 0) musicPanel.artUrl = "" }
+        stdout: SplitParser {
+            onRead: data => {
+                var url = data.trim()
+                if (url === "") { musicPanel.artUrl = ""; musicPanel.artLocalPath = ""; return }
+                musicPanel.artUrl = url
+                if (url.startsWith("https://") || url.startsWith("http://")) {
+                    artDownloadProc.command = ["bash", "-c", "curl -sL '" + url + "' -o /tmp/qs_art.jpg && echo '/tmp/qs_art.jpg'"]
+                    artDownloadProc.running = true
+                } else {
+                    musicPanel.artLocalPath = url.replace("file://", "")
+                }
+            }
+        }
+        onExited: code => { if (code !== 0) { musicPanel.artUrl = ""; musicPanel.artLocalPath = "" } }
+    }
+
+    Process {
+        id: artDownloadProc
+        stdout: SplitParser { onRead: data => musicPanel.artLocalPath = data.trim() }
     }
 
     Process {

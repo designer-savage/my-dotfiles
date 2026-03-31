@@ -8,14 +8,15 @@ import QtQuick.Controls
 PanelWindow {
     id: wifiPanel
     visible: true
-    exclusionMode: ExclusionMode.Ignore
     anchors { top: true; right: true }
     margins { top: 40; right: root.wifiVisible ? 6 : -350 }
     implicitHeight: 420
     implicitWidth: 320
     color: "transparent"
     focusable: true
+    WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.keyboardFocus: root.wifiVisible ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
+    exclusionMode: ExclusionMode.Ignore
     Behavior on margins.right { NumberAnimation { duration: 300; easing.type: Easing.OutCubic } }
 
     Item {

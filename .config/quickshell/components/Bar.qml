@@ -4,12 +4,11 @@ import Quickshell.Wayland
 import Quickshell.Hyprland
 import QtQuick
 import QtQuick.Layouts
-import Qt5Compat.GraphicalEffects
+import QtQuick.Effects
 
 PanelWindow {
     id: bar
     visible: true
-    exclusionMode: ExclusionMode.Exclusive
     WlrLayershell.layer: WlrLayer.Top
     WlrLayershell.namespace: "quickshell"
     anchors { top: true; left: true; right: true }
@@ -505,7 +504,7 @@ PanelWindow {
                 property bool expanded: false
                 width: {
                     var minWidth = clockRow.implicitWidth + 24
-                    var maxWidth = 300 // максимальная ширина для предотвращения вылезания
+                    var maxWidth = 300
                     return Math.min(minWidth, maxWidth)
                 }
                 hovered: clockMA.containsMouse
@@ -752,14 +751,13 @@ PanelWindow {
                             opacity: bar.mediaClass === "playing" ? 1.0 : 0.7
 
                             layer.enabled: true
-                            layer.effect: DropShadow {
-                                horizontalOffset: 0
-                                verticalOffset: 1
-                                radius: 4
-                                samples: 9
-                                spread: 0.2
-                                color: Qt.rgba(0, 0, 0, 0.8)
-                                transparentBorder: true
+                            layer.effect: MultiEffect {
+                                shadowEnabled: true
+                                shadowHorizontalOffset: 0
+                                shadowVerticalOffset: 1
+                                shadowBlur: 0.4
+                                shadowColor: Qt.rgba(0, 0, 0, 0.8)
+                                shadowOpacity: 0.8
                             }
 
                             Behavior on opacity { NumberAnimation { duration: 300; easing.type: Easing.OutCubic } }
@@ -780,11 +778,14 @@ PanelWindow {
                             color: root.walColor2
 
                             layer.enabled: true
-                            layer.effect: Glow {
-                                radius: 3
-                                samples: 7
-                                color: root.walColor2
-                                transparentBorder: true
+                            layer.effect: MultiEffect {
+                                shadowEnabled: true
+                                shadowHorizontalOffset: 0
+                                shadowVerticalOffset: 0
+                                shadowBlur: 0.6
+                                shadowColor: root.walColor2
+                                shadowOpacity: 1.0
+                                shadowScale: 1.05
                             }
 
                             Behavior on width { NumberAnimation { duration: 200; easing.type: Easing.Linear } }
@@ -831,7 +832,7 @@ PanelWindow {
                 property bool expanded: false
                 width: {
                     var minWidth = batteryRow.implicitWidth + 24
-                    var maxWidth = 200 // максимальная ширина, чтобы не вылезать
+                    var maxWidth = 200
                     return Math.min(minWidth, maxWidth)
                 }
                 hovered: batteryMA.containsMouse
@@ -865,7 +866,7 @@ PanelWindow {
                             font.pixelSize: 14
                             font.family: "JetBrainsMono Nerd Font"
                             anchors.verticalCenter: parent.verticalCenter
-                            
+
                             Behavior on color { ColorAnimation { duration: 400; easing.type: Easing.OutCubic } }
                         }
 
@@ -873,7 +874,7 @@ PanelWindow {
                             anchors.verticalCenter: parent.verticalCenter
                             spacing: 4
                             clip: true
-                            
+
                             Text {
                                 id: batteryTextContent
                                 text: bar.batteryPercent + "%"
@@ -888,7 +889,7 @@ PanelWindow {
                                 font.family: "JetBrainsMono Nerd Font"
                                 Behavior on color { ColorAnimation { duration: 400; easing.type: Easing.OutCubic } }
                             }
-                            
+
                             Text {
                                 visible: batteryNotch.expanded && bar.batteryTime !== ""
                                 text: bar.batteryTime

@@ -4,7 +4,7 @@ import Quickshell.Wayland
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-import Qt5Compat.GraphicalEffects
+import QtQuick.Effects
 import "./components"
 
 ShellRoot {
@@ -231,7 +231,7 @@ ShellRoot {
         root.walApplying = true
         applyWallProc.command = ["bash", "-c",
             "ln -sf '" + wallpaper.path + "' '" + root.wallpaperPath + "/current' && " +
-            "swww img '" + wallpaper.path + "' --transition-type any --transition-duration 2 & " +
+            "awww img '" + wallpaper.path + "' --transition-type any --transition-duration 2 & " +
             "wal -i '" + wallpaper.path + "' -n -q && " +
             "sleep 0.3"
         ]
