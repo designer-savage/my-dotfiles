@@ -8,13 +8,14 @@ import QtQuick.Controls
 PanelWindow {
     id: launcherPanel
     visible: true
-    exclusionMode: ExclusionMode.Ignore
     anchors { top: true; bottom: true; left: true }
     margins { top: 40; bottom: 10; left: root.launcherVisible ? 6 : -450 }
     implicitWidth: 420
     color: "transparent"
     focusable: true
+    WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.keyboardFocus: root.launcherVisible ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
+    exclusionMode: ExclusionMode.Ignore
     Behavior on margins.left { NumberAnimation { duration: 300; easing.type: Easing.OutCubic } }
 
     Rectangle {

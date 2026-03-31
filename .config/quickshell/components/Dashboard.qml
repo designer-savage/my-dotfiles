@@ -4,18 +4,19 @@ import Quickshell.Wayland
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-import Qt5Compat.GraphicalEffects
+import QtQuick.Effects
 
 PanelWindow {
     id: dashboard
     visible: true
-    exclusionMode: ExclusionMode.Ignore
     anchors { top: true; bottom: true; right: true }
     margins { top: 40; bottom: 10; right: root.dashboardVisible ? 6 : -450 }
     implicitWidth: 420
     color: "transparent"
     focusable: true
+    WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.keyboardFocus: root.dashboardVisible ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
+    exclusionMode: ExclusionMode.Ignore
     Behavior on margins.right { NumberAnimation { duration: 300; easing.type: Easing.OutCubic } }
 
     property int cpuVal: 0
@@ -87,39 +88,40 @@ PanelWindow {
                                     border.width: 3
                                     border.color: root.walColor5
                                 }
-                                Image {
-                                    id: pfpImage
-                                    anchors.centerIn: parent
-                                    width: 68
-                                    height: 68
-                                    source: "file://" + dashboard.configPath + "/assets/pfps/pfp.jpg"
-                                    fillMode: Image.PreserveAspectCrop
-                                    smooth: true
-                                    cache: false
-                                    sourceSize.width: 256
-                                    sourceSize.height: 256
-                                    visible: false
-                                    property int reloadTrigger: 0
-                                    function reload() {
-                                        reloadTrigger++
-                                        source = ""
-                                        source = "file://" + dashboard.configPath + "/assets/pfps/pfp.jpg?" + reloadTrigger
-                                    }
-                                }
                                 Rectangle {
                                     id: pfpMask
                                     anchors.centerIn: parent
                                     width: 68
                                     height: 68
                                     radius: 34
-                                    visible: false
+                                    opacity: 0
+                                    layer.enabled: true
                                 }
-                                OpacityMask {
+                                Item {
                                     anchors.centerIn: parent
                                     width: 68
                                     height: 68
-                                    source: pfpImage
-                                    maskSource: pfpMask
+                                    layer.enabled: true
+                                    layer.effect: MultiEffect {
+                                        maskEnabled: true
+                                        maskSource: pfpMask
+                                    }
+                                    Image {
+                                        id: pfpImage
+                                        anchors.fill: parent
+                                        source: "file://" + dashboard.configPath + "/assets/pfps/pfp.jpg"
+                                        fillMode: Image.PreserveAspectCrop
+                                        smooth: true
+                                        cache: false
+                                        sourceSize.width: 256
+                                        sourceSize.height: 256
+                                        property int reloadTrigger: 0
+                                        function reload() {
+                                            reloadTrigger++
+                                            source = ""
+                                            source = "file://" + dashboard.configPath + "/assets/pfps/pfp.jpg?" + reloadTrigger
+                                        }
+                                    }
                                 }
                                 Rectangle {
                                     anchors.right: parent.right
@@ -214,32 +216,33 @@ PanelWindow {
                                                     border.color: thumbMa.containsMouse ? root.walColor13 : root.walColor5
                                                     Behavior on border.color { ColorAnimation { duration: 150 } }
                                                 }
-                                                Image {
-                                                    id: thumbImg
-                                                    anchors.centerIn: parent
-                                                    width: 44
-                                                    height: 44
-                                                    source: "file://" + modelData
-                                                    fillMode: Image.PreserveAspectCrop
-                                                    smooth: true
-                                                    sourceSize.width: 128
-                                                    sourceSize.height: 128
-                                                    visible: false
-                                                }
                                                 Rectangle {
                                                     id: thumbMask
                                                     anchors.centerIn: parent
                                                     width: 44
                                                     height: 44
                                                     radius: 22
-                                                    visible: false
+                                                    opacity: 0
+                                                    layer.enabled: true
                                                 }
-                                                OpacityMask {
+                                                Item {
                                                     anchors.centerIn: parent
                                                     width: 44
                                                     height: 44
-                                                    source: thumbImg
-                                                    maskSource: thumbMask
+                                                    layer.enabled: true
+                                                    layer.effect: MultiEffect {
+                                                        maskEnabled: true
+                                                        maskSource: thumbMask
+                                                    }
+                                                    Image {
+                                                        id: thumbImg
+                                                        anchors.fill: parent
+                                                        source: "file://" + modelData
+                                                        fillMode: Image.PreserveAspectCrop
+                                                        smooth: true
+                                                        sourceSize.width: 128
+                                                        sourceSize.height: 128
+                                                    }
                                                 }
                                                 MouseArea {
                                                     id: thumbMa
@@ -502,7 +505,7 @@ PanelWindow {
                         id: profileGetProc
                         command: ["bash", "-c", "cat /sys/firmware/acpi/platform_profile"]
                         stdout: SplitParser {
-                            onRead: data => parent.currentProfile = data.trim()
+                            onRead: data => powerProfileBox.currentProfile = data.trim()
                         }
                     }
 
