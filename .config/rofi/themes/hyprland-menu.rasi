@@ -1,0 +1,124 @@
+/* Hyprland Menu — Variant B (Recent + List)
+   Imports pywal colors from ~/.cache/wal/colors-rofi.rasi
+   Scale: 1.0 × 1.65 applied to all prototype values */
+@import "~/.cache/wal/colors-rofi.rasi"
+
+* {
+  background-color:  transparent;
+  text-color:        @foreground;
+  font:              "Inter 21";
+}
+
+window {
+  background-color: @background;
+  border:           1px;
+  border-color:     @color8;
+  border-radius:    13px;
+  width:            825px;
+  padding:          0px;
+  location:         center;
+  anchor:           center;
+}
+
+mainbox {
+  children:  [inputbar, listview];
+  spacing:   0px;
+}
+
+/* ── Search bar ── */
+inputbar {
+  background-color: @background;
+  border:           0px 0px 1px 0px;
+  border-color:     @color8;
+  border-radius:    13px 13px 0px 0px;
+  padding:          30px 36px;
+  spacing:          23px;
+  children:         [prompt, entry];
+}
+
+prompt {
+  text-color:     @color4;
+  font:           "Inter SemiBold 21";
+  vertical-align: 0.5;
+}
+
+entry {
+  text-color:        @foreground;
+  placeholder:       "Search apps…";
+  placeholder-color: @color8;
+  vertical-align:    0.5;
+  blink:             true;
+}
+
+/* ── App list ── */
+listview {
+  background-color: @background;
+  border-radius:    0px 0px 13px 13px;
+  padding:          13px;
+  spacing:          5px;
+  lines:            10;
+  cycle:            true;
+  scrollbar:        false;
+  dynamic:          true;
+  fixed-height:     false;
+}
+
+element {
+  background-color: transparent;
+  border:           0px 0px 0px 3px;
+  border-color:     transparent;
+  border-radius:    10px;
+  padding:          18px 30px;
+  spacing:          26px;
+  children:         [element-icon, element-text];
+  cursor:           pointer;
+  orientation:      horizontal;
+}
+
+element normal.normal,
+element normal.urgent,
+element normal.active {
+  background-color: transparent;
+  text-color:       @color7;
+  border-color:     transparent;
+}
+
+element alternate.normal,
+element alternate.urgent,
+element alternate.active {
+  background-color: transparent;
+  text-color:       @color7;
+  border-color:     transparent;
+}
+
+element selected.normal,
+element selected.urgent,
+element selected.active {
+  background-color: @color1;
+  border-color:     @color4;
+  text-color:       @foreground;
+}
+
+element-icon {
+  size:           30px;
+  vertical-align: 0.5;
+  cursor:         inherit;
+}
+
+element-text {
+  font:           "Inter 21";
+  vertical-align: 0.5;
+  cursor:         inherit;
+}
+
+/* ── No-results message ── */
+message {
+  padding:          46px;
+  background-color: @background;
+  border-radius:    0px 0px 13px 13px;
+}
+
+textbox {
+  text-color: @color8;
+  font:        "Inter 21";
+}

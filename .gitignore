@@ -1,13 +1,12 @@
-# Игнорируем временные файлы и бэкапы
+# Temp files and backups
 *.bak
+*.bak.*
 *.backup.*
 .DS_Store
+
+# Local agent instruction files
 CLAUDE.md
 QWEN.md
 
-# Игнорируем состояние quickshell
-.config/quickshell/state/
-.config/quickshell/app_usage.json
-
-# Игнорируем бэкапы hyprland
+# Hyprland backups
 .config/hypr/*.bak.*

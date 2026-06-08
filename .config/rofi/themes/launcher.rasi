@@ -1,0 +1,139 @@
+@import "~/.config/rofi/colors.rasi"
+
+configuration {
+    show-icons:          true;
+    icon-theme:          "Papirus-Dark";
+    display-drun:        " ";
+    drun-display-format: "{name}";
+    font:                "Inter 13";
+    kb-cancel:           "Escape,Super+r";
+}
+
+* {
+    background-color: transparent;
+    text-color:       @fg;
+}
+
+window {
+    background-color: rgba(10, 12, 16, 0.97);
+    border:           1px solid;
+    border-color:     @border-color;
+    border-radius:    10px;
+    width:            500px;
+    padding:          0;
+    location:         center;
+    anchor:           center;
+}
+
+mainbox {
+    background-color: transparent;
+    padding:          10px;
+    spacing:          8px;
+    children:         [ inputbar, listview ];
+}
+
+/* ─── Search bar ───────────────────────────────── */
+inputbar {
+    background-color: @surface-2;
+    border-radius:    8px;
+    padding:          10px 14px;
+    spacing:          10px;
+    children:         [ prompt, entry ];
+}
+
+prompt {
+    text-color:     @accent;
+    font:           "JetBrainsMono Nerd Font Bold 15";
+    vertical-align: 0.5;
+}
+
+textbox-prompt-colon {
+    expand: false;
+    str:    "";
+}
+
+entry {
+    font:              "Inter 13";
+    placeholder:       "Search apps…";
+    placeholder-color: @muted;
+    vertical-align:    0.5;
+    blink:             true;
+}
+
+/* ─── App list ─────────────────────────────────── */
+listview {
+    background-color: transparent;
+    lines:            9;
+    columns:          1;
+    spacing:          1px;
+    scrollbar:        false;
+    cycle:            true;
+    dynamic:          true;
+    fixed-height:     false;
+}
+
+element {
+    background-color: transparent;
+    border-radius:    6px;
+    padding:          6px 12px;
+    spacing:          10px;
+    orientation:      horizontal;
+    cursor:           pointer;
+    border:           0px 0px 0px 2px;
+    border-color:     transparent;
+}
+
+element-icon {
+    size:           24px;
+    vertical-align: 0.5;
+    cursor:         inherit;
+}
+
+element-text {
+    vertical-align: 0.5;
+    cursor:         inherit;
+    font:           "Inter 12";
+}
+
+element.normal.normal {
+    background-color: transparent;
+    text-color:       @fg;
+    border-color:     transparent;
+}
+
+element.selected.normal {
+    background-color: @surface-1;
+    text-color:       @fg;
+    border-color:     @accent;
+}
+
+element.alternate.normal {
+    background-color: transparent;
+    text-color:       @fg;
+    border-color:     transparent;
+}
+
+element.urgent.normal,
+element.selected.urgent {
+    background-color: @danger;
+    text-color:       @bg;
+    border-color:     transparent;
+}
+
+element.active.normal,
+element.selected.active {
+    background-color: @surface-1;
+    text-color:       @fg;
+    border-color:     @accent;
+}
+
+/* ─── No-results ───────────────────────────────── */
+message {
+    background-color: transparent;
+    padding:          8px;
+}
+
+textbox {
+    text-color: @muted;
+    font:       "Inter 11";
+}

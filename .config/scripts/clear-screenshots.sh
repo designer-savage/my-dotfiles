@@ -18,3 +18,4 @@ fi
 find "$DIR" -maxdepth 1 -type f -name "*.png" -delete
 
 notify-send "Screenshots" "Удалено $COUNT скриншотов"
+

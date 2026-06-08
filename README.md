@@ -1,6 +1,10 @@
 # My Dotfiles
 
-Personal Arch Linux configuration with Hyprland and Quickshell. 🐧
+Personal Arch Linux desktop configuration built around Hyprland. 🐧
+
+Mostly native, lightweight tooling: **Waybar** for the bar, **Rofi** for launchers/menus,
+**pywal** for wallpaper-driven theming. A trimmed-down **Quickshell** instance survives only
+for the Wi-Fi and Bluetooth slide-out panels.
 
 ## Screenshots
 
@@ -16,51 +20,41 @@ Personal Arch Linux configuration with Hyprland and Quickshell. 🐧
 - **hyprland** — tiling Wayland compositor 🖼️
 - **hyprlock** — lock screen 🔒
 - **hypridle** — idle management 😴
-- **hyprpaper** — wallpaper manager 🖼️
-- **hyprpicker** — color picker 🎨
-- **hyprshot** — screenshot utility 📸
 
-### UI & Bars
-- **quickshell** — QML-based status bar (primary) 📊
-- **waybar** — alternative bar (backup) 📊
+### UI & Shell
+- **waybar** — top bar: workspaces, clock, battery, volume, RAM, keyboard layout, network, Bluetooth 📊
+- **rofi** — app launcher, wallpaper picker, Wi-Fi and Bluetooth menus 🚀
+- **quickshell** — minimal QML instance, only the Wi-Fi/Bluetooth panels (toggled from Waybar) 📶
 - **swaync** — notification center 🔔
-- **rofi/wofi** — application launchers 🚀
+- **pywal** — generates the color scheme from the current wallpaper 🎨
+- **awww** — wallpaper daemon 🖼️
 
 ### Applications
 - **kitty** — GPU-accelerated terminal 🐱
-- **firefox** — web browser 🌐
-- **dolphin/thunar** — file managers 📁
-- **neovim/vim** — text editors ✏️
-- **visual-studio-code** — IDE 💻
-- **obs-studio** — screen recording 🎥
-- **mpv/celluloid** — video player 🎬
-
-### Utilities
-- **paru/yay** — AUR helpers 📦
-- **lazygit** — Git TUI 🔧
-- **bottom/htop** — system monitoring 📊
-- **fastfetch** — system information 💻
-- **eza** — modern ls replacement 📄
-- **brightnessctl** — brightness control ☀️
-- **blueman** — Bluetooth manager 📶
+- **thunar** — file manager 📁
+- **neovim** — text editor ✏️
+- **mpv / celluloid** — video players 🎬
 
 ## Project Structure
 
 ```
 .
 ├── .config/
-│   ├── hypr/           # Modular Hyprland configs
-│   ├── quickshell/     # QML status bar config
-│   ├── kitty/          # Terminal config
-│   └── waybar/         # Alternative bar
-├── install.sh          # Config installation script
-├── packages.txt        # List of installed packages
+│   ├── hypr/        # Modular Hyprland configs (sourced from hyprland.conf)
+│   ├── waybar/      # Bar config, style, generated colors, custom scripts
+│   ├── rofi/        # Launcher/menu themes and scripts
+│   ├── quickshell/  # Minimal QML shell — Wi-Fi/Bluetooth panels only
+│   ├── kitty/       # Terminal config
+│   └── scripts/     # Hyprland helper scripts (screenshot, nightlight, battery, …)
+├── .local/bin/      # Wallpaper + monitor refresh-rate helpers, quickshell launcher
+├── install.sh       # Symlinks configs into ~/.config and ~/.local/bin
+├── packages.txt     # Explicitly installed packages
 └── README.md
 ```
 
 ## Installation
 
-### 1. Clone the repository
+### 1. Clone
 
 ```bash
 git clone https://github.com/designer-savage/my-dotfiles.git
@@ -69,17 +63,15 @@ cd my-dotfiles
 
 ### 2. Install packages
 
-Install all packages from `packages.txt`:
-
 ```bash
-yay -S --needed $(cat packages.txt | awk '{print $1}')
+paru -S --needed - < packages.txt
 ```
 
-Or selectively install only the components you need.
+Or install only the components you actually want.
 
-### 3. Install configs
+### 3. Link configs
 
-The script will create symlinks to configs (existing ones will be backed up):
+Creates symlinks into `~/.config` and `~/.local/bin`; existing files are backed up first.
 
 ```bash
 chmod +x install.sh
@@ -88,25 +80,33 @@ chmod +x install.sh
 
 ### 4. Restart Hyprland
 
-After installation, restart Hyprland or re-login.
+Re-login or restart Hyprland to pick everything up.
 
-## Features
+## Theming
 
-- Modular Hyprland config structure (split into separate files) 🧩
-- Quickshell with QML for flexible status bar customization 🎨
-- Configured power management (TLP, cpupower) 🔋
-- Pipewire for audio 🔊
-- NetworkManager + iwd for networking 🌐
-- Automatic backups when installing configs 💾
+Wallpaper changes drive the whole color scheme. Picking a wallpaper (rofi, `Super+W`) runs
+`~/.local/bin/wallpaper-apply.sh`, which sets the wallpaper via `awww`, regenerates colors with
+`pywal`, then `wal-postprocess.sh` propagates them to Waybar, Rofi, swaync and GTK and hot-reloads
+Waybar. Quickshell reads the same `~/.cache/wal/colors.json` for its panels.
 
 ## Key Bindings
 
-Main keybindings are configured in `.config/hypr/binds.conf`. Examples:
+Full list in `.config/hypr/binds.conf`. Highlights (Super = Windows key):
 
-- `Super + Q` — close window ❌
-- `Super + Return` — open terminal 🖥️
-- `Super + R` — application launcher 🚀
-- `Super + F` — fullscreen 🔍
-- `Super + [1-9]` — switch workspaces 🔄
+| Binding | Action |
+|---------|--------|
+| `Super + Return` | Terminal (kitty) |
+| `Super + Q` | Close window |
+| `Super + R` | App launcher (rofi) |
+| `Super + W` | Wallpaper picker (rofi) |
+| `Super + Shift + W` | Random wallpaper |
+| `Super + E` | File manager (thunar) |
+| `Super + L` | Lock screen |
+| `Super + F` | Fullscreen |
+| `Super + N` | Toggle night light |
+| `Super + Space` | Switch keyboard layout (us/ru) |
+| `Super + [1-5]` | Switch workspace |
+| `Print` | Screenshot (area) |
 
-See the config for the full list.
+> Note: some bindings point at personal paths (e.g. `Super+B`, `Super+T`) — adjust them in
+> `binds.conf` to your own setup.

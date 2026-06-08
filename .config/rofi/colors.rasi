@@ -1,0 +1,15 @@
+* {
+    /* ─── Core tokens ─── */
+    bg:           #120d0f;
+    fg:           #f3d9c1;
+    accent:       #ABA089;
+    muted:        #aa9787;
+    danger:       #AE7052;
+    selected-bg:  #ABA089;
+    selected-fg:  #120d0f;
+
+    /* ─── Surfaces ─── */
+    surface-1:    rgba(255, 255, 255, 0.04);
+    surface-2:    rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.07);
+}

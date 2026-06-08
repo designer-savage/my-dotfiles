@@ -18,11 +18,11 @@ while true; do
 
     if [[ -n "$CHARGE" ]]; then
         if [[ "$CHARGE" -le 10 && "$NOTIFIED_10" == false ]]; then
-            notify-send -u critical -i battery-low "Критический заряд" "Осталось ${CHARGE}% — подключи зарядку" -t 10000
+            notify-send -u critical -i battery-caution "Критический заряд" "Осталось ${CHARGE}% — подключи зарядку" -t 10000
             NOTIFIED_10=true
             NOTIFIED_20=true
         elif [[ "$CHARGE" -le 20 && "$NOTIFIED_20" == false ]]; then
-            notify-send -u normal -i battery-caution "Низкий заряд" "Осталось ${CHARGE}%" -t 8000
+            notify-send -u normal -i battery-low "Низкий заряд" "Осталось ${CHARGE}%" -t 8000
             NOTIFIED_20=true
         fi
     fi

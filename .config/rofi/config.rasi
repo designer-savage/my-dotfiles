@@ -1,0 +1,14 @@
+configuration {
+    modi:                   "drun,run,window";
+    show-icons:             true;
+    icon-theme:             "Papirus-Dark";
+    drun-display-format:    "{name}";
+    display-drun:           "  Apps";
+    display-run:            "  Run";
+    display-window:         "  Windows";
+    sort:                   true;
+    sorting-method:         "fzf";
+    matching:               "fuzzy";
+    terminal:               "kitty";
+    font:                   "Inter 21";
+}

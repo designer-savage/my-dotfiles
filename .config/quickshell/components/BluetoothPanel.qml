@@ -9,7 +9,7 @@ PanelWindow {
     id: btPanel
     visible: true
     anchors { top: true; right: true }
-    margins { top: 40; right: root.btVisible ? 6 : -350 }
+    margins { top: 56; right: root.btVisible ? 6 : -350 }
     implicitHeight: 460
     implicitWidth: 320
     color: "transparent"
