@@ -12,7 +12,6 @@ for the Wi-Fi and Bluetooth slide-out panels.
 ![Desktop 2](screenshots/screen-2.png)
 ![Desktop 3](screenshots/screen-3.png)
 ![Desktop 4](screenshots/screen-4.png)
-![Desktop 5](screenshots/screen-5.png)
 
 ## Main Components
 
