@@ -1,0 +1,9 @@
+* {{
+    foreground:   {foreground};
+    background:   {color0};
+    color1:       {color1};
+    color2:       {color2};
+    color4:       {color4};
+    color7:       {color7};
+    color8:       {color8};
+}}

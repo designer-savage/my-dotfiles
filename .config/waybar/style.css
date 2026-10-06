@@ -1,167 +1,267 @@
-@import "colors.css";
+/* ───────────────────────────────────────────────────────────────────────────
+   Waybar — same glass system as the Spotlight launcher.
+
+   The bar is one translucent strip flush to the top edge. Inside it the
+   modules are packed into raised islands (workspaces / time / status /
+   power), each with its own outline, and the members of an island are split
+   by hairlines the way a segmented control is. That is where the structure
+   comes from — the bar itself draws no boxes.
+
+   The blur is not drawn here: rofi, swaync and this bar all rely on
+   Hyprland's layer rules (hypr/layerrules.lua).
+
+   Every colour comes from glass.css, regenerated from the pywal palette on
+   each wallpaper change by ~/.local/bin/gen-glass-theme.py — accent and
+   accent-alt are the wallpaper's own hues, normalised so they stay legible
+   on glass. Nothing here hardcodes a colour.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+@import "glass.css";
 
 /* ─── Reset ──────────────────────────────────────────────────────────────── */
 * {
-    font-family: "JetBrainsMono Nerd Font";
-    font-size: 16px;
+    /* Adwaita Sans for text, Nerd Font for the glyphs: Pango falls back
+       per-glyph, so one stack covers both. */
+    font-family: "Adwaita Sans", "JetBrainsMono Nerd Font";
+    font-size: 15px;
+    font-weight: 500;
     min-height: 0;
     border: none;
     border-radius: 0;
     padding: 0;
     margin: 0;
+    text-shadow: none;
+    box-shadow: none;
 }
 
-/* ─── Bar window — fully transparent ─────────────────────────────────────── */
+/* ─── The bar ────────────────────────────────────────────────────────────── */
 window#waybar {
-    background: transparent;
-    color: @foreground;
+    background: @bar-glass;
+    border-bottom: 1px solid @hairline;
+    color: @label;
 }
 
-tooltip {
-    background: rgba(13, 13, 13, 0.90);
-    border: 1px solid @color5;
-    border-radius: 10px;
-    color: @foreground;
+/* ─── Islands ────────────────────────────────────────────────────────────── */
+/* A raised surface over the bar glass, outlined so the group has an edge.
+   The 3px padding keeps member widgets off the rounded corners, so a hover
+   highlight never pokes out of the island. */
+#workspaces,
+#time,
+#status,
+#custom-power {
+    background: @island;
+    border: 1px solid @island-line;
+    border-radius: 11px;
+    margin: 4px 5px;
+    padding: 3px;
 }
 
-/* ─── Notch base: every module is a dark rounded pill ────────────────────── */
+/* ─── Island members ─────────────────────────────────────────────────────── */
+/* The divider is painted as a background gradient rather than border-right:
+   a border follows the rounded path and would bend at the corners, while the
+   gradient is clipped to the radius and stays a clean 1px rule.
+
+   The side gutter of every member is split in two: 4px of transparent border
+   and 7px of padding. The fill — hover, or a lit state like caffeine — is
+   clipped to the padding box, so it stops 4px short of the member's edge,
+   while the divider keeps the whole border box and still lands on the edge.
+   Without that split a lit module paints over its own rule and butts straight
+   into its neighbour's, which is what broke the rhythm on either side of the
+   caffeine and refresh-rate capsules. */
 #clock,
 #custom-date,
-#workspaces,
 #battery,
 #pulseaudio,
-#custom-ram,
+#backlight,
 #custom-keyboard,
+#custom-caffeine,
+#custom-hz,
 #network,
 #bluetooth {
-    background: rgba(0, 0, 0, 0.50);
-    border-radius: 16px;
-    margin: 6px 3px;
-    padding: 0 14px;
-    color: @foreground;
+    background-color: transparent;
+    background-image: linear-gradient(to right,
+                                      transparent calc(100% - 1px),
+                                      @divider calc(100% - 1px));
+    background-origin: border-box;
+    background-repeat: no-repeat;
+    border-style: solid;
+    border-color: transparent;
+    border-width: 0 4px;
+    border-radius: 8px;
+    margin: 0;
+    padding: 0 7px;
+    color: @label-secondary;
+    transition: box-shadow 180ms ease,
+                color 180ms ease;
 }
 
-/* ─── Clock + date ───────────────────────────────────────────────────────── */
+/* Last member of each island — nothing to divide from. */
+#custom-date,
+#bluetooth {
+    background-image: none;
+}
+
+#clock:hover,
+#custom-date:hover,
+#battery:hover,
+#pulseaudio:hover,
+#backlight:hover,
+#custom-keyboard:hover,
+#custom-caffeine:hover,
+#custom-hz:hover,
+#network:hover,
+#bluetooth:hover {
+    box-shadow: inset 0 0 0 20px @hover;
+    color: @label;
+}
+
+/* ─── Time ───────────────────────────────────────────────────────────────── */
 #clock {
-    color: @color5;
-    letter-spacing: 0.5px;
+    color: @label;
+    font-weight: 600;
 }
 
 #custom-date {
-    color: @foreground;
-    letter-spacing: 0.5px;
+    color: @label-secondary;
 }
 
 /* ─── Workspaces ─────────────────────────────────────────────────────────── */
-#workspaces {
-    padding: 0 4px;
-}
-
-#workspaces button {
+#workspaces label {
     background: transparent;
-    color: alpha(@foreground, 0.38);
-    border-radius: 10px;
-    /* все кнопки всегда одного размера — ряд не двигается вообще */
-    min-width: 18px;
-    padding: 2px 12px;
-    margin: 0 2px;
-    /* прозрачная рамка в базе — чтобы активная не дёргала вёрстку */
-    border: 1px solid transparent;
-    /* анимируем только подсветку: цвет/фон/рамка — без релейаута, гладко */
-    transition: background-color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-                color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-                border-color 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    color: @label-tertiary;
+    border-radius: 8px;
+    /* Fixed width so the row never reflows as workspaces come and go. */
+    min-width: 17px;
+    padding: 1px 11px;
+    margin: 0 1px;
+    transition: background-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+                color 220ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-#workspaces button:hover {
-    background: alpha(@foreground, 0.09);
-    color: alpha(@foreground, 0.70);
+#workspaces widget:hover label {
+    background: @hover;
+    color: @label;
 }
 
-/* Active: инверт — светлый фон, тёмный текст. Размер не меняется */
-#workspaces button.active,
-#workspaces button.focused {
-    background: alpha(@foreground, 0.18);
-    color: @foreground;
-    border: 1px solid alpha(@foreground, 0.45);
+/* The active workspace reuses the launcher's selected-row treatment. */
+#workspaces label.active {
+    background: alpha(@accent, 0.45);
+    color: @label;
 }
 
-#workspaces button.urgent {
-    background: alpha(@color1, 0.25);
-    color: @color1;
+#workspaces label.urgent {
+    background: alpha(@sys-red, 0.30);
+    color: @sys-red;
 }
 
-/* ─── Battery ────────────────────────────────────────────────────────────── */
-#battery {
-    color: @color5;
+/* ─── Module colours ─────────────────────────────────────────────────────── */
+/* ONE themed hue across the whole status island. Splitting modules between
+   two hues by "domain" produced a rainbow that had nothing to do with the
+   wallpaper — and the second hue was invented by rotating the first, so it
+   was never in the picture at all. One real colour from the image reads as
+   deliberate; several do not.
+   State is expressed by brightness inside the label ramp instead of by more
+   hues, so the bar never needs a green and a yellow the wallpaper lacks. */
+#pulseaudio,
+#network,
+#bluetooth,
+#custom-keyboard,
+#battery,
+#backlight,
+#custom-hz,
+#custom-caffeine {
+    color: @accent;
 }
 
-#battery.charging {
-    color: @color2;
-}
-
+/* Charging is good news: it brightens to full white rather than switching to
+   a colour borrowed from another palette. */
+#battery.charging,
 #battery.plugged {
-    color: @color2;
+    color: @label;
 }
 
+/* Warning and critical share the one semantic colour there is; the blink is
+   what separates them. */
 #battery.warning:not(.charging) {
-    color: @color4;
+    color: @sys-red;
 }
 
 #battery.critical:not(.charging) {
-    color: @color1;
-    animation: blink 1s linear infinite;
+    color: @sys-red;
+    animation: blink 1.4s ease-in-out infinite;
 }
 
 @keyframes blink {
-    50% { opacity: 0.5; }
+    50% { opacity: 0.45; }
 }
 
-/* ─── Volume ─────────────────────────────────────────────────────────────── */
-#pulseaudio {
-    color: @color5;
-}
-
-#pulseaudio.muted {
-    color: @color8;
-}
-
-/* ─── RAM ────────────────────────────────────────────────────────────────── */
-#custom-ram {
-    color: @color5;
-}
-
-#custom-ram.warning {
-    color: @color1;
-}
-
-/* ─── Keyboard layout ────────────────────────────────────────────────────── */
-#language,
-#custom-keyboard {
-    color: @color5;
-    min-width: 36px;
-    font-weight: bold;
-}
-
-/* ─── Network ────────────────────────────────────────────────────────────── */
-#network {
-    color: @color2;
-}
-
+#pulseaudio.muted,
 #network.disconnected {
-    color: @color8;
+    color: @label-tertiary;
 }
 
-/* ─── Bluetooth ──────────────────────────────────────────────────────────── */
+#custom-keyboard {
+    min-width: 30px;
+    font-weight: 600;
+}
+
+/* Caffeine and a manual refresh rate are both deliberate overrides of an
+   automatic behaviour, so they brighten to the full label while in force. */
+#custom-caffeine.on,
+#custom-hz.manual {
+    color: @label;
+    box-shadow: inset 0 0 0 20px alpha(@accent, 0.32);
+}
+
+/* The cup's ink runs 4px past its own advance — the glyph is wider than the
+   cell Pango measures it into — so with an equal gutter it sat hard against
+   the right edge of its capsule. The extra 4px on that side is what puts it
+   back in the middle. */
+#custom-caffeine {
+    padding-right: 11px;
+}
+
 #bluetooth {
-    color: @color8;
+    min-width: 22px;
+    transition: box-shadow 180ms ease,
+                color 180ms ease,
+                min-width 320ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 #bluetooth.connected {
-    color: @color5;
+    min-width: 185px;
 }
 
-#bluetooth.on {
-    color: @color4;
+/* ─── Power ──────────────────────────────────────────────────────────────── */
+/* Its own island: it is the only destructive thing in the bar. */
+/* 14px of side padding, not 12: that is the 3px an island keeps around its
+   members plus the 11px gutter a member keeps around its own glyph, so the
+   power icon sits exactly as far from its outline as every status icon does
+   from that island's. */
+#custom-power {
+    color: @label-secondary;
+    min-width: 18px;
+    padding: 3px 14px;
+    transition: background-color 180ms ease,
+                color 180ms ease,
+                border-color 180ms ease;
 }
 
+#custom-power:hover {
+    background: alpha(@sys-red, 0.22);
+    border-color: alpha(@sys-red, 0.45);
+    color: @sys-red;
+}
+
+/* ─── Tooltips ───────────────────────────────────────────────────────────── */
+tooltip {
+    background: @bar-glass;
+    border: 1px solid @hairline;
+    border-radius: 12px;
+    color: @label;
+}
+
+tooltip label {
+    color: @label;
+    padding: 4px 6px;
+}

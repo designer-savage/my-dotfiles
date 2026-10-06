@@ -1,7 +1,7 @@
 #!/bin/bash
 # Bluetooth manager via bluetoothctl + rofi
 
-THEME="$HOME/.config/rofi/themes/launcher.rasi"
+THEME="$HOME/.config/rofi/themes/menu.rasi"
 BT_POWERED=$(bluetoothctl show 2>/dev/null | grep "Powered:" | awk '{print $2}')
 
 # ─── Build menu ────────────────────────────────────────────────────────────

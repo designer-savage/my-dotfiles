@@ -1,12 +1,26 @@
-# Temp files and backups
+# Backups and snapshots left behind while editing
 *.bak
-*.bak.*
+*.bak*
 *.backup.*
+*.pre-*
+*.retired
+*.unused
 .DS_Store
+__pycache__/
 
 # Local agent instruction files
 CLAUDE.md
+AGENTS.md
 QWEN.md
+.claude/
 
-# Hyprland backups
-.config/hypr/*.bak.*
+# Generated on every wallpaper change by wal-postprocess.sh / gen-glass-theme.py.
+# These land inside the repo once install.sh has symlinked the directories.
+.config/waybar/colors.css
+.config/waybar/glass.css
+.config/rofi/colors.rasi
+.config/rofi/glass.rasi
+.config/swaync/glass.css
+
+# Runtime state
+.config/quickshell/state/

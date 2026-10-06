@@ -28,12 +28,19 @@ PYEOF
 # ─── Rofi colors ───────────────────────────────────────────────────────────
 cp "$HOME/.cache/wal/colors-rofi-dark.rasi" "$HOME/.config/rofi/colors.rasi" 2>/dev/null
 
-# ─── swaync style ──────────────────────────────────────────────────────────
-if [ -f "$HOME/.cache/wal/colors-swaync.css" ]; then
-    cp -f --remove-destination "$HOME/.cache/wal/colors-swaync.css" \
-        "$HOME/.config/swaync/style.css" 2>/dev/null || true
-    pkill -SIGUSR1 swaync 2>/dev/null || true
-fi
+# ─── Glass design tokens (rofi themes + hyprlock) ──────────────────────────
+# Re-derives the accent and the panel tint from the new palette, so the
+# launcher / wallpaper grid / lock screen follow the wallpaper.
+"$HOME/.local/bin/gen-glass-theme.py" 2>/dev/null || true
+
+# ─── swaync ────────────────────────────────────────────────────────────────
+# style.css is hand-authored and imports the generated glass.css, so nothing
+# is copied over it any more — only the reload is needed. (It used to be
+# overwritten wholesale from ~/.cache/wal/colors-swaync.css.)
+#
+# SIGUSR1 does NOT reload the stylesheet — swaync-client is the only thing
+# that does, so the panel kept stale colours after a wallpaper change.
+swaync-client --reload-css 2>/dev/null || true
 
 # ─── GTK3 ──────────────────────────────────────────────────────────────────
 [ -f "$HOME/.cache/wal/gtk3.css" ] && \

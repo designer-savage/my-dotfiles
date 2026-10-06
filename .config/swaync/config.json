@@ -1,0 +1,106 @@
+{
+  "$schema": "/etc/xdg/swaync/configSchema.json",
+  "positionX": "right",
+  "positionY": "top",
+  "layer": "overlay",
+  "control-center-layer": "overlay",
+  "control-center-margin-top": 8,
+  "control-center-margin-bottom": 10,
+  "control-center-margin-right": 8,
+  "control-center-margin-left": 0,
+  "notification-2fa-action": true,
+  "notification-inline-replies": false,
+  "notification-icon-size": 42,
+  "notification-body-image-height": 0,
+  "notification-body-image-width": 0,
+  "timeout": 10,
+  "timeout-low": 5,
+  "timeout-critical": 0,
+  "fit-to-screen": false,
+  "control-center-width": 420,
+  "notification-window-width": 440,
+  "keyboard-shortcuts": true,
+  "image-visibility": "when-available",
+  "transition-time": 200,
+  "hide-on-clear": false,
+  "hide-on-action": false,
+  "script-fail-notify": false,
+
+  "widgets": [
+    "buttons-grid#connectivity",
+    "dnd",
+    "volume",
+    "backlight",
+    "buttons-grid#actions",
+    "title",
+    "notifications"
+  ],
+
+  "widget-config": {
+    "buttons-grid#connectivity": {
+      "buttons-per-row": 2,
+      "actions": [
+        {
+          "label": "󰤨\nWI-FI\nPOSKOCMOC_5G",
+          "command": "nm-connection-editor",
+          "type": "toggle",
+          "update-command": "nmcli -t -f TYPE,STATE dev | awk -F: '/wifi/{print $2}' | grep -q connected && echo true || echo false",
+          "active": true
+        },
+        {
+          "label": "󰒃\nVPN\nDisconnected",
+          "command": "nm-connection-editor",
+          "type": "toggle",
+          "update-command": "nmcli -t -f ACTIVE,TYPE con show --active 2>/dev/null | grep -q ':vpn' && echo true || echo false",
+          "active": false
+        }
+      ]
+    },
+
+    "dnd": {
+      "text": "󰂚   Do Not Disturb"
+    },
+
+    "volume": {
+      "label": "󰕾"
+    },
+
+    "backlight": {
+      "label": "󰃠",
+      "device": "amdgpu_bl1",
+      "subsystem": "backlight"
+    },
+
+    "buttons-grid#actions": {
+      "buttons-per-row": 5,
+      "actions": [
+        {
+          "label": "⏻",
+          "command": "systemctl poweroff"
+        },
+        {
+          "label": "󰜉",
+          "command": "systemctl reboot"
+        },
+        {
+          "label": "󰌾",
+          "command": "hyprlock"
+        },
+        {
+          "label": "󰒲",
+          "command": "systemctl suspend"
+        },
+        {
+          "label": "󰍃",
+          "command": "hyprctl dispatch exit"
+        }
+      ]
+    },
+
+    "title": {
+      "text": "NOTIFICATIONS",
+      "clear-all-button": true,
+      "button-text": "CLEAR"
+    }
+  }
+}

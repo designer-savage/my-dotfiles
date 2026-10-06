@@ -5,10 +5,11 @@ import Quickshell.Hyprland
 import QtQuick
 import "./components"
 
-// Минимальный quickshell: только панели Wi-Fi и Bluetooth.
-// Вызываются из waybar модулей network/bluetooth через
+// Минимальный quickshell: панели Wi-Fi, Bluetooth и питания.
+// Вызываются из waybar модулей network/bluetooth/custom-power через
 //   qs ipc --newest call wifi toggle
 //   qs ipc --newest call bluetooth toggle
+//   qs ipc --newest call power toggle
 // Всё остальное (бар, лаунчер, обои, плеер) переехало на нативные утилиты
 // (waybar, rofi, swww/awww, pywal).
 
@@ -21,6 +22,7 @@ ShellRoot {
     // Видимость панелей
     property bool wifiVisible: false
     property bool btVisible: false
+    property bool powerVisible: false
 
     // Wi-Fi state
     property bool wifiEnabled: true
@@ -48,14 +50,65 @@ ShellRoot {
     property color walColor5: "#89b4fa"
     property color walColor8: "#6c7086"
 
+    // ---- Glass design tokens ----------------------------------------------
+    // Общие с rofi, waybar, swaync и hyprlock. Источник — ~/.cache/wal/glass.json,
+    // который пишет ~/.local/bin/gen-glass-theme.py на каждой смене обоев.
+    // Акцент там уже нормализован по насыщенности, поэтому мутная палитра всё
+    // равно даёт читаемый цвет — брать color5 напрямую больше не нужно.
+    property color glassTint: "#12171E"
+    property real  glassAlpha: 0.74
+    property color accent: "#89b4fa"
+    property color accentAlt: "#a6adf4"
+    property color sysRed: "#FF453A"
+    property color sysYellow: "#FFD60A"
+    property color sysGreen: "#32D74B"
+
+    // Материал панели и рампа текста Apple — производные, а не отдельные токены.
+    readonly property color glassBg: Qt.rgba(glassTint.r, glassTint.g, glassTint.b, glassAlpha)
+    readonly property color glassRaised: Qt.rgba(1, 1, 1, 0.07)
+    readonly property color hairline: Qt.rgba(1, 1, 1, 0.15)
+    readonly property color islandLine: Qt.rgba(1, 1, 1, 0.11)
+    readonly property color hoverBg: Qt.rgba(1, 1, 1, 0.12)
+    readonly property color label: "#F5F5F7"
+    readonly property color labelSecondary: Qt.rgba(0.922, 0.922, 0.961, 0.62)
+    readonly property color labelTertiary: Qt.rgba(0.922, 0.922, 0.961, 0.32)
+
+    // Единая типографика с лаунчером: текст — Adwaita Sans, глифы — Nerd Font.
+    readonly property string uiFont: "Adwaita Sans"
+    readonly property string glyphFont: "JetBrainsMono Nerd Font"
+
     function toggleWifi() {
         wifiVisible = !wifiVisible
-        if (wifiVisible) { btVisible = false; walColorsProc.running = true; refreshWifi() }
+        if (wifiVisible) { btVisible = false; powerVisible = false; walColorsProc.running = true; glassProc.running = true; refreshWifi() }
     }
 
     function toggleBluetooth() {
         btVisible = !btVisible
-        if (btVisible) { wifiVisible = false; walColorsProc.running = true; refreshBluetooth() }
+        if (btVisible) { wifiVisible = false; powerVisible = false; walColorsProc.running = true; glassProc.running = true; refreshBluetooth() }
+    }
+
+    function togglePower() {
+        powerVisible = !powerVisible
+        if (powerVisible) { wifiVisible = false; btVisible = false; walColorsProc.running = true; glassProc.running = true }
+    }
+
+    // lock — hyprlock; suspend — блокируем экран и уходим в suspend-to-RAM,
+    // сессия и все открытые окна остаются на месте; reboot и poweroff — как
+    // называются. Перезагрузка и выключение ничего не спрашивают, поэтому в
+    // панели они стоят последними и подсвечиваются красным.
+    function runPowerAction(act) {
+        powerVisible = false
+        if (act === "lock")
+            powerActionProc.command = ["bash", "-c", "pidof hyprlock >/dev/null || setsid hyprlock &"]
+        else if (act === "suspend")
+            powerActionProc.command = ["bash", "-c", "pidof hyprlock >/dev/null || setsid hyprlock & sleep 0.5; systemctl suspend"]
+        else if (act === "reboot")
+            powerActionProc.command = ["bash", "-c", "systemctl reboot"]
+        else if (act === "poweroff")
+            powerActionProc.command = ["bash", "-c", "systemctl poweroff"]
+        else
+            return
+        powerActionProc.running = true
     }
 
     function refreshWifi() {
@@ -97,6 +150,7 @@ ShellRoot {
 
     Component.onCompleted: {
         walColorsProc.running = true
+        glassProc.running = true
     }
 
     // ---- pywal цвета ----
@@ -118,6 +172,27 @@ ShellRoot {
                         root.walColor5 = json.colors.color5 || root.walColor5
                         root.walColor8 = json.colors.color8 || root.walColor8
                     }
+                } catch(e) {}
+            }
+        }
+    }
+
+    // ---- Glass токены ----
+    Process {
+        id: glassProc
+        command: ["bash", "-c", "cat '" + root.cachePath + "/wal/glass.json' 2>/dev/null"]
+        stdout: SplitParser {
+            splitMarker: ""
+            onRead: data => {
+                try {
+                    var g = JSON.parse(data)
+                    if (g.glass)      root.glassTint = g.glass
+                    if (g.glassAlpha) root.glassAlpha = g.glassAlpha
+                    if (g.accent)     root.accent = g.accent
+                    if (g.accentAlt)  root.accentAlt = g.accentAlt
+                    if (g.red)        root.sysRed = g.red
+                    if (g.yellow)     root.sysYellow = g.yellow
+                    if (g.green)      root.sysGreen = g.green
                 } catch(e) {}
             }
         }
@@ -370,6 +445,11 @@ ShellRoot {
         onTriggered: refreshBluetooth()
     }
 
+    // ---- Питание ----
+    Process {
+        id: powerActionProc
+    }
+
     // ---- Панели ----
     Loader {
         active: true
@@ -381,6 +461,11 @@ ShellRoot {
         asynchronous: true
         sourceComponent: Component { BluetoothPanel {} }
     }
+    Loader {
+        active: true
+        asynchronous: true
+        sourceComponent: Component { PowerPanel {} }
+    }
 
     // ---- IPC (вызывается из waybar) ----
     IpcHandler {
@@ -390,5 +475,9 @@ ShellRoot {
     IpcHandler {
         target: "bluetooth"
         function toggle() { root.toggleBluetooth() }
+    }
+    IpcHandler {
+        target: "power"
+        function toggle() { root.togglePower() }
     }
 }

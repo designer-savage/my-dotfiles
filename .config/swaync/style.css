@@ -1,0 +1,325 @@
+/* ───────────────────────────────────────────────────────────────────────────
+   swaync — notification centre on the same glass system as the Spotlight
+   launcher and the bar.
+
+   Structure mirrors waybar: the panel is one glass surface, and everything
+   inside it (each widget, each notification) is a raised, outlined island.
+
+   The blur is Hyprland's, via the layer rule on `swaync-notification-window`
+   in hypr/layerrules.lua — swaync only paints a translucent colour.
+
+   Colours come from glass.css, regenerated from the pywal palette on every
+   wallpaper change by ~/.local/bin/gen-glass-theme.py.
+
+   NOTE: this file used to be overwritten on every wallpaper change by
+   wal-postprocess.sh copying ~/.cache/wal/colors-swaync.css over it. That
+   copy is gone — the palette now arrives through glass.css instead, so this
+   file is hand-authored and safe to edit.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+@import "glass.css";
+
+* {
+    font-family: "Adwaita Sans", "JetBrainsMono Nerd Font";
+    font-size: 14px;
+    text-shadow: none;
+    box-shadow: none;
+}
+
+.blank-window {
+    background: transparent;
+}
+
+/* ─── Panel ──────────────────────────────────────────────────────────────── */
+.control-center {
+    background: @glass;
+    border: 1px solid @hairline;
+    border-radius: 22px;
+    padding: 0;
+}
+
+.control-center-list {
+    background: transparent;
+    padding: 10px 12px 12px 12px;
+}
+
+.control-center-list-placeholder {
+    color: @label-tertiary;
+    padding: 40px 0;
+}
+
+/* ─── Widgets are islands, like the groups in the bar ────────────────────── */
+.widget-dnd,
+.widget-volume,
+.widget-backlight,
+.widget-mpris,
+.widget-buttons-grid {
+    background: @glass-raised;
+    border: 1px solid @island-line;
+    border-radius: 14px;
+    margin: 6px 12px;
+    padding: 10px 14px;
+    color: @label;
+}
+
+/* ─── Section title ──────────────────────────────────────────────────────── */
+.widget-title,
+.top-action-title {
+    background: transparent;
+    color: @label-tertiary;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    margin: 14px 16px 2px 16px;
+    padding: 0;
+}
+
+.widget-title > label {
+    color: @label-tertiary;
+}
+
+/* "Clear all" — a quiet text action, not a filled button. */
+.widget-title > button {
+    background: transparent;
+    border: 1px solid @island-line;
+    border-radius: 9px;
+    color: @label-secondary;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 5px 12px;
+    transition: background-color 180ms ease,
+                color 180ms ease,
+                border-color 180ms ease;
+}
+
+.widget-title > button:hover {
+    background: @hover;
+    border-color: @hairline;
+    color: @label;
+}
+
+/* ─── Buttons ────────────────────────────────────────────────────────────── */
+.widget-buttons-grid > flowbox > flowboxchild > button {
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 11px;
+    color: @label-secondary;
+    padding: 10px 6px;
+    margin: 2px;
+    transition: background-color 180ms ease,
+                color 180ms ease,
+                border-color 180ms ease;
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button:hover {
+    background: @hover;
+    color: @label;
+}
+
+/* A toggle that is currently on gets the accent, the same signal the
+   launcher uses for a selected row. */
+.widget-buttons-grid > flowbox > flowboxchild > button.toggle:checked {
+    background: alpha(@accent, 0.30);
+    border-color: alpha(@accent, 0.50);
+    color: @label;
+}
+
+/* The power row: the one destructive control here, so it reads red on
+   approach rather than sitting red all the time. */
+#actions > flowbox > flowboxchild > button:hover {
+    background: alpha(@sys-red, 0.22);
+    border-color: alpha(@sys-red, 0.42);
+    color: @sys-red;
+}
+
+/* ─── Do not disturb ─────────────────────────────────────────────────────── */
+.widget-dnd {
+    color: @label;
+}
+
+.widget-dnd > switch {
+    background: rgba(255, 255, 255, 0.14);
+    border: none;
+    border-radius: 14px;
+    min-width: 46px;
+    min-height: 26px;
+    transition: background-color 200ms ease;
+}
+
+.widget-dnd > switch:checked {
+    background: @accent;
+}
+
+.widget-dnd > switch slider {
+    background: #FFFFFF;
+    border-radius: 13px;
+    min-width: 22px;
+    min-height: 22px;
+}
+
+/* ─── Sliders ────────────────────────────────────────────────────────────── */
+/* macOS capsule sliders: a dim track, an accent fill, a white knob. */
+.widget-volume,
+.widget-backlight {
+    color: @label-secondary;
+}
+
+.widget-volume scale trough,
+.widget-backlight scale trough {
+    background: rgba(255, 255, 255, 0.12);
+    border: none;
+    border-radius: 8px;
+    min-height: 8px;
+}
+
+.widget-volume scale trough highlight,
+.widget-backlight scale trough highlight {
+    background: @accent;
+    border-radius: 8px;
+    min-height: 8px;
+}
+
+.widget-volume scale slider,
+.widget-backlight scale slider {
+    background: #FFFFFF;
+    border: none;
+    border-radius: 9px;
+    min-width: 16px;
+    min-height: 16px;
+    margin: -5px;
+}
+
+/* ─── Media player ───────────────────────────────────────────────────────── */
+.widget-mpris-player {
+    background: transparent;
+    padding: 2px;
+}
+
+.widget-mpris-album-art {
+    border-radius: 10px;
+}
+
+.widget-mpris-title {
+    color: @label;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.widget-mpris-subtitle {
+    color: @label-secondary;
+    font-size: 12px;
+}
+
+.widget-mpris-player button {
+    background: transparent;
+    border: none;
+    border-radius: 9px;
+    color: @label-secondary;
+    padding: 6px 10px;
+    transition: background-color 180ms ease, color 180ms ease;
+}
+
+.widget-mpris-player button:hover {
+    background: @hover;
+    color: @label;
+}
+
+/* ─── Notifications ──────────────────────────────────────────────────────── */
+.notification-row {
+    outline: none;
+    background: transparent;
+    margin: 0;
+    padding: 0;
+}
+
+.notification {
+    background: transparent;
+    border-radius: 14px;
+    margin: 5px 0;
+    padding: 0;
+}
+
+/* The card itself. Same raised island treatment as a widget, so a
+   notification does not read as a different material. */
+.notification-content {
+    background: @glass-raised;
+    border: 1px solid @island-line;
+    border-radius: 14px;
+    padding: 12px 14px;
+    color: @label;
+}
+
+/* A standalone popup has no panel behind it, so it carries the full glass. */
+.floating-notifications .notification-content {
+    background: @glass;
+    border: 1px solid @hairline;
+}
+
+.notification-default-action,
+.notification-action {
+    background: transparent;
+    border: none;
+    border-radius: 14px;
+    color: @label;
+    transition: background-color 180ms ease;
+}
+
+.notification-default-action:hover {
+    background: @hover;
+}
+
+.notification-action {
+    border: 1px solid @island-line;
+    border-radius: 10px;
+    margin: 6px 3px 0 3px;
+    padding: 7px 10px;
+    color: @label-secondary;
+    font-size: 13px;
+}
+
+.notification-action:hover {
+    background: @hover;
+    color: @label;
+}
+
+.summary {
+    color: @label;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.body {
+    color: @label-secondary;
+    font-size: 13px;
+}
+
+.time {
+    color: @label-tertiary;
+    font-size: 11px;
+}
+
+.close-button {
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    color: @label-tertiary;
+    margin: 6px;
+    padding: 2px 6px;
+    transition: background-color 160ms ease, color 160ms ease;
+}
+
+.close-button:hover {
+    background: alpha(@sys-red, 0.24);
+    color: @sys-red;
+}
+
+/* Urgency is the one thing allowed to colour a whole card's edge. */
+.notification.critical .notification-content,
+.critical .notification-content {
+    border-color: alpha(@sys-red, 0.55);
+}
+
+.notification.low .notification-content {
+    border-color: @island-line;
+}

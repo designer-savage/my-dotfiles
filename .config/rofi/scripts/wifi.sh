@@ -1,7 +1,7 @@
 #!/bin/bash
 # Wi-Fi manager via nmcli + rofi
 
-THEME="$HOME/.config/rofi/themes/launcher.rasi"
+THEME="$HOME/.config/rofi/themes/menu.rasi"
 WIFI_ON=$(nmcli radio wifi)
 
 # ─── Build menu ────────────────────────────────────────────────────────────

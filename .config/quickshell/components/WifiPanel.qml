@@ -9,7 +9,7 @@ PanelWindow {
     id: wifiPanel
     visible: true
     anchors { top: true; right: true }
-    margins { top: 56; right: root.wifiVisible ? 6 : -350 }
+    margins { top: 46; right: root.wifiVisible ? 8 : -350 }
     implicitHeight: 420
     implicitWidth: 320
     color: "transparent"
@@ -37,8 +37,27 @@ PanelWindow {
 
         Rectangle {
             anchors.fill: parent
-            color: Qt.rgba(root.walBackground.r, root.walBackground.g, root.walBackground.b, 0.7)
-            radius: 20
+            // Стекло рисует Hyprland (layerrules.lua размывает слой quickshell),
+            // здесь только полупрозрачная заливка и кромка.
+            color: root.glassBg
+            radius: 22
+            border.width: 1
+            border.color: root.hairline
+
+                // Liquid glass: блик верхней кромки. Панель не может размыть
+                // то, что за ней — это делает Hyprland (layer_rule на
+                // namespace quickshell). Здесь только то, что рисует сам
+                // клиент: полупрозрачная заливка, кромка и вот этот блик,
+                // который читается как источник света сверху.
+                Rectangle {
+                    anchors.fill: parent
+                    radius: parent.radius
+                    gradient: Gradient {
+                        GradientStop { position: 0.0;  color: Qt.rgba(1, 1, 1, 0.10) }
+                        GradientStop { position: 0.30; color: Qt.rgba(1, 1, 1, 0.02) }
+                        GradientStop { position: 1.0;  color: Qt.rgba(1, 1, 1, 0.0) }
+                    }
+                }
 
             ColumnLayout {
                 anchors.fill: parent
@@ -49,23 +68,23 @@ PanelWindow {
                     Layout.fillWidth: true
                     Text {
                         text: "󰤨"
-                        color: root.walColor5
+                        color: root.labelSecondary
                         font.pixelSize: 22
-                        font.family: "JetBrainsMono Nerd Font"
+                        font.family: root.glyphFont
                     }
                     Text {
                         text: "Wi-Fi"
-                        color: root.walColor5
+                        color: root.label
                         font.pixelSize: 16
-                        font.bold: true
-                        font.family: "JetBrainsMono Nerd Font"
+                        font.weight: Font.DemiBold
+                        font.family: root.uiFont
                     }
                     Item { Layout.fillWidth: true }
                     Rectangle {
                         width: 44
                         height: 24
                         radius: 12
-                        color: root.wifiEnabled ? root.walColor5 : Qt.rgba(0.3, 0.3, 0.3, 0.5)
+                        color: root.wifiEnabled ? root.accent : Qt.rgba(0.3, 0.3, 0.3, 0.5)
                         Behavior on color { ColorAnimation { duration: 200 } }
                         Rectangle {
                             width: 20
@@ -73,7 +92,7 @@ PanelWindow {
                             radius: 10
                             y: 2
                             x: root.wifiEnabled ? 22 : 2
-                            color: root.walBackground
+                            color: root.glassTint
                             Behavior on x { NumberAnimation { duration: 200; easing.type: Easing.OutCubic } }
                         }
                         MouseArea {
@@ -88,7 +107,9 @@ PanelWindow {
                     Layout.fillWidth: true
                     Layout.preferredHeight: 36
                     radius: 10
-                    color: Qt.rgba(0, 0, 0, 0.3)
+                    color: root.glassRaised
+                    border.width: 1
+                    border.color: root.islandLine
                     visible: root.wifiPasswordSSID !== ""
                     RowLayout {
                         anchors.fill: parent
@@ -97,23 +118,23 @@ PanelWindow {
                         spacing: 8
                         Text {
                             text: "󰌾"
-                            color: root.walColor8
+                            color: root.labelSecondary
                             font.pixelSize: 12
-                            font.family: "JetBrainsMono Nerd Font"
+                            font.family: root.glyphFont
                         }
                         TextInput {
                             id: wifiPassInput
                             Layout.fillWidth: true
                             Layout.fillHeight: true
-                            color: root.walForeground
-                            font.pixelSize: 12
-                            font.family: "JetBrainsMono Nerd Font"
+                            color: root.label
+                            font.pixelSize: 13
+                            font.family: root.uiFont
                             verticalAlignment: TextInput.AlignVCenter
                             echoMode: TextInput.Password
                             clip: true
                             Text {
                                 text: "Password for " + root.wifiPasswordSSID
-                                color: root.walColor8
+                                color: root.labelSecondary
                                 visible: !parent.text
                                 anchors.left: parent.left
                                 anchors.verticalCenter: parent.verticalCenter
@@ -137,14 +158,14 @@ PanelWindow {
                             width: 24
                             height: 24
                             radius: 6
-                            color: root.walColor5
+                            color: root.accent
                             Text {
                                 anchors.centerIn: parent
                                 text: "→"
-                                color: root.walBackground
-                                font.pixelSize: 11
-                                font.bold: true
-                                font.family: "JetBrainsMono Nerd Font"
+                                color: root.glassTint
+                                font.pixelSize: 12
+                                font.weight: Font.DemiBold
+                                font.family: root.uiFont
                             }
                             MouseArea {
                                 anchors.fill: parent
@@ -168,9 +189,9 @@ PanelWindow {
                     visible: root.wifiEnabled
                     Text {
                         text: "Available Networks"
-                        color: root.walColor8
-                        font.pixelSize: 11
-                        font.family: "JetBrainsMono Nerd Font"
+                        color: root.labelSecondary
+                        font.pixelSize: 12
+                        font.family: root.uiFont
                     }
                     Item { Layout.fillWidth: true }
                     Rectangle {
@@ -181,9 +202,9 @@ PanelWindow {
                         Text {
                             anchors.centerIn: parent
                             text: root.wifiScanning ? "󰑓" : "󰑐"
-                            color: root.walColor8
-                            font.pixelSize: 12
-                            font.family: "JetBrainsMono Nerd Font"
+                            color: root.labelSecondary
+                            font.pixelSize: 13
+                            font.family: root.uiFont
                         }
                         MouseArea {
                             id: wifiRefreshMa
@@ -200,7 +221,9 @@ PanelWindow {
                 Rectangle {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    color: Qt.rgba(0, 0, 0, 0.3)
+                    color: root.glassRaised
+                    border.width: 1
+                    border.color: root.islandLine
                     radius: 12
                     clip: true
                     ListView {
@@ -215,23 +238,13 @@ PanelWindow {
                             radius: 10
                             color: {
                                 if (modelData.ssid === root.wifiCurrentSSID)
-                                    return Qt.rgba(root.walColor2.r, root.walColor2.g, root.walColor2.b, 0.12)
+                                    return Qt.rgba(root.accent.r, root.accent.g, root.accent.b, 0.30)
                                 if (wifiNetMa.containsMouse)
                                     return Qt.rgba(1, 1, 1, 0.08)
                                 return "transparent"
                             }
                             Behavior on color { ColorAnimation { duration: 120 } }
                             Behavior on height { NumberAnimation { duration: 200; easing.type: Easing.OutCubic } }
-                            Rectangle {
-                                visible: modelData.ssid === root.wifiCurrentSSID
-                                width: 3
-                                height: 24
-                                radius: 2
-                                color: root.walColor2
-                                anchors.left: parent.left
-                                anchors.leftMargin: 4
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
                             RowLayout {
                                 anchors.fill: parent
                                 anchors.leftMargin: 14
@@ -239,19 +252,19 @@ PanelWindow {
                                 spacing: 10
                                 Text {
                                     text: modelData.ssid === root.wifiCurrentSSID ? "󰤨" : (modelData.signal > 66 ? "󰤨" : modelData.signal > 33 ? "󰤥" : "󰤟")
-                                    color: modelData.ssid === root.wifiCurrentSSID ? root.walColor2 : root.walColor8
+                                    color: root.labelSecondary
                                     font.pixelSize: 18
-                                    font.family: "JetBrainsMono Nerd Font"
+                                    font.family: root.uiFont
                                 }
                                 ColumnLayout {
                                     Layout.fillWidth: true
                                     spacing: 1
                                     Text {
                                         text: modelData.ssid
-                                        color: modelData.ssid === root.wifiCurrentSSID ? root.walColor2 : root.walForeground
-                                        font.pixelSize: 12
+                                        color: root.label
+                                        font.pixelSize: 13
                                         font.bold: modelData.ssid === root.wifiCurrentSSID
-                                        font.family: "JetBrainsMono Nerd Font"
+                                        font.family: root.uiFont
                                         elide: Text.ElideRight
                                         Layout.fillWidth: true
                                     }
@@ -263,9 +276,9 @@ PanelWindow {
                                                 return "Connected"
                                             return (modelData.security !== "" && modelData.security !== "--" ? "󰌾 " + modelData.security : "Open") + " · " + modelData.signal + "%"
                                         }
-                                        color: root.walColor8
-                                        font.pixelSize: 9
-                                        font.family: "JetBrainsMono Nerd Font"
+                                        color: root.labelSecondary
+                                        font.pixelSize: 10
+                                        font.family: root.uiFont
                                     }
                                 }
                                 Rectangle {
@@ -277,9 +290,9 @@ PanelWindow {
                                     Text {
                                         anchors.centerIn: parent
                                         text: "󰅖"
-                                        color: root.walColor1
+                                        color: root.sysRed
                                         font.pixelSize: 12
-                                        font.family: "JetBrainsMono Nerd Font"
+                                        font.family: root.glyphFont
                                     }
                                     MouseArea {
                                         id: wifiConnBtnMa
@@ -316,17 +329,17 @@ PanelWindow {
                         anchors.centerIn: parent
                         visible: root.wifiNetworks.length === 0 && !root.wifiScanning
                         text: root.wifiEnabled ? "No networks found" : "Wi-Fi is off"
-                        color: root.walColor8
-                        font.pixelSize: 12
-                        font.family: "JetBrainsMono Nerd Font"
+                        color: root.labelSecondary
+                        font.pixelSize: 13
+                        font.family: root.uiFont
                     }
                     Text {
                         anchors.centerIn: parent
                         visible: root.wifiScanning
                         text: "Scanning..."
-                        color: root.walColor8
-                        font.pixelSize: 12
-                        font.family: "JetBrainsMono Nerd Font"
+                        color: root.labelSecondary
+                        font.pixelSize: 13
+                        font.family: root.uiFont
                     }
                 }
             }

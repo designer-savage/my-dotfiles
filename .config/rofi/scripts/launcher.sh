@@ -1,8 +1,3 @@
-#!/bin/bash
-if command -v rofi &>/dev/null; then
-    rofi -show drun -theme ~/.config/rofi/themes/hyprland-menu.rasi
-elif command -v wofi &>/dev/null; then
-    wofi --show drun --prompt "" --insensitive
-else
-    notify-send "Launcher" "Install rofi: sudo pacman -S rofi"
-fi
+#!/usr/bin/env bash
+# Application launcher (SUPER+R) — macOS Spotlight layout, see themes/spotlight.rasi
+exec rofi -show drun -theme "$HOME/.config/rofi/themes/spotlight.rasi"

@@ -1,14 +1,20 @@
+/* Global rofi defaults. Individual themes (spotlight, wallpapers, menu)
+   override what they care about; this only has to be sane on its own. */
 configuration {
     modi:                   "drun,run,window";
     show-icons:             true;
-    icon-theme:             "Papirus-Dark";
+    /* Tela-circle is the one full icon set installed here — a single circular
+       silhouette for every app, instead of each vendor's own logo shape.     */
+    icon-theme:             "Tela-circle-dark";
     drun-display-format:    "{name}";
-    display-drun:           "  Apps";
-    display-run:            "  Run";
-    display-window:         "  Windows";
+    display-drun:           "";
+    display-run:            "";
+    display-window:         "";
     sort:                   true;
     sorting-method:         "fzf";
     matching:               "fuzzy";
     terminal:               "kitty";
-    font:                   "Inter 21";
+    /* Adwaita Sans is Inter-derived and is what this system actually has;
+       the previous "Inter 21" resolved to a fallback face. */
+    font:                   "Adwaita Sans 19";
 }

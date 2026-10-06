@@ -1,0 +1,130 @@
+/* ───────────────────────────────────────────────────────────────────────────
+   Menu — compact glass list for small dmenu prompts (Wi-Fi, Bluetooth, …).
+
+   Same material and radii as Spotlight, one size down: these are decisions,
+   not searches, so the field is a labelled prompt rather than a big query.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+@import "~/.config/rofi/glass.rasi"
+
+configuration {
+    show-icons: true;
+    kb-cancel:  "Escape";
+}
+
+* {
+    font: "Adwaita Sans 17";
+}
+
+window {
+    location:         center;
+    anchor:           center;
+    width:            720px;
+    padding:          0;
+
+    background-color: @glass;
+    background-image: linear-gradient(to bottom, #FFFFFF14, #FFFFFF00);
+    border:           1px;
+    border-color:     @hairline;
+    border-radius:    22px;
+}
+
+mainbox {
+    children: [ inputbar, listview ];
+    spacing:  0;
+    padding:  0;
+}
+
+inputbar {
+    children:      [ prompt, entry ];
+    padding:       20px 24px;
+    spacing:       14px;
+    border-radius: 22px 22px 0 0;
+}
+
+prompt {
+    text-color:     @text;
+    font:           "Adwaita Sans Bold 17";
+    vertical-align: 0.5;
+}
+
+entry {
+    text-color:        @text;
+    placeholder:       "Filter";
+    placeholder-color: @text-tertiary;
+    vertical-align:    0.5;
+    cursor:            text;
+    blink:             true;
+}
+
+listview {
+    lines:        8;
+    columns:      1;
+    dynamic:      true;
+    fixed-height: false;
+    cycle:        true;
+    scrollbar:    false;
+    spacing:      2px;
+    padding:      8px;
+    border:       1px 0 0 0;
+    border-color: @divider;
+}
+
+element {
+    orientation:      horizontal;
+    children:         [ element-icon, element-text ];
+    padding:          10px 14px;
+    spacing:          14px;
+    border:           0;
+    border-radius:    11px;
+    background-color: transparent;
+    text-color:       @text-secondary;
+    cursor:           pointer;
+}
+
+element-icon {
+    size:           24px;
+    vertical-align: 0.5;
+    cursor:         inherit;
+}
+
+element-text {
+    vertical-align: 0.5;
+    cursor:         inherit;
+}
+
+element normal.normal,
+element normal.active,
+element alternate.normal,
+element alternate.active {
+    background-color: transparent;
+    text-color:       @text-secondary;
+}
+
+element selected.normal,
+element selected.active {
+    background-color: @accent-fill;
+    text-color:       @text;
+}
+
+element normal.urgent,
+element alternate.urgent {
+    background-color: transparent;
+    text-color:       @accent;
+}
+
+element selected.urgent {
+    background-color: @accent-fill;
+    text-color:       @text;
+}
+
+message {
+    padding:      18px 24px;
+    border:       1px 0 0 0;
+    border-color: @divider;
+}
+
+textbox {
+    text-color:       @text-tertiary;
+    background-color: transparent;
+}

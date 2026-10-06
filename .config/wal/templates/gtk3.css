@@ -1,0 +1,283 @@
+/* pywal GTK3 theme — auto-generated from wallpaper colors */
+
+* {{
+    background-color: transparent;
+    color: {foreground};
+    border-color: alpha({color8}, 0.3);
+    outline-color: alpha({color4}, 0.3);
+    -gtk-secondary-caret-color: {color4};
+}}
+
+window, .background {{
+    background-color: mix({background}, {foreground}, 0.08);
+    color: {foreground};
+}}
+
+headerbar, .titlebar {{
+    background-color: mix({background}, {foreground}, 0.08);
+    color: {foreground};
+    border: none;
+    box-shadow: none;
+}}
+
+headerbar:backdrop, .titlebar:backdrop {{
+    background-color: mix({background}, {foreground}, 0.08);
+    color: {color8};
+}}
+
+/* Menus */
+menu, .menu, .context-menu {{
+    background-color: {color0};
+    color: {foreground};
+    border: 1px solid alpha({color8}, 0.3);
+    border-radius: 8px;
+    padding: 4px;
+}}
+
+menuitem {{
+    border-radius: 6px;
+    padding: 4px 8px;
+}}
+
+menuitem:hover {{
+    background-color: {color4};
+    color: {background};
+}}
+
+popover, popover.background {{
+    background-color: {color0};
+    color: {foreground};
+    border: 1px solid alpha({color8}, 0.3);
+    border-radius: 8px;
+}}
+
+/* Sidebars */
+.sidebar, placessidebar, .navigation-sidebar, paned > box {{
+    background-color: mix({background}, {foreground}, 0.08);
+    color: {foreground};
+    border: none;
+}}
+
+.sidebar row, placessidebar row {{
+    border-radius: 6px;
+    color: {foreground};
+}}
+
+.sidebar row:selected, placessidebar row:selected {{
+    background-color: alpha({color4}, 0.25);
+    color: {foreground};
+}}
+
+.sidebar row:hover, placessidebar row:hover {{
+    background-color: alpha({color4}, 0.1);
+}}
+
+/* File/icon view */
+.view, treeview, iconview, .content-view {{
+    background-color: mix({background}, {foreground}, 0.08);
+    color: {foreground};
+    border: none;
+}}
+
+.view:selected, treeview row:selected, iconview:selected {{
+    background-color: alpha({color4}, 0.3);
+    color: {foreground};
+}}
+
+.view:hover, iconview:hover {{
+    background-color: alpha({color4}, 0.1);
+}}
+
+/* Rubberband selection */
+rubberband, .rubberband {{
+    background-color: alpha({color4}, 0.2);
+    border: 1px solid {color4};
+}}
+
+/* Paned separator */
+paned > separator {{
+    background-color: transparent;
+    min-width: 1px;
+    min-height: 1px;
+}}
+
+/* Buttons */
+button {{
+    background-color: alpha({color8}, 0.15);
+    color: {foreground};
+    border: 1px solid alpha({color8}, 0.2);
+    border-radius: 6px;
+    padding: 4px 8px;
+}}
+
+button:hover {{
+    background-color: alpha({color4}, 0.25);
+    color: {foreground};
+}}
+
+button:active, button:checked {{
+    background-color: alpha({color4}, 0.35);
+    color: {foreground};
+}}
+
+button.flat {{
+    background-color: transparent;
+    border: none;
+}}
+
+button.flat:hover {{
+    background-color: alpha({color4}, 0.15);
+}}
+
+/* Entry / text input */
+entry {{
+    background-color: alpha({color0}, 0.5);
+    color: {foreground};
+    border: 1px solid alpha({color8}, 0.3);
+    border-radius: 6px;
+    caret-color: {foreground};
+    padding: 4px 8px;
+}}
+
+entry:focus {{
+    border-color: {color4};
+}}
+
+/* Scrollbar */
+scrollbar {{
+    background-color: transparent;
+}}
+
+scrollbar slider {{
+    background-color: alpha({color8}, 0.4);
+    border-radius: 9999px;
+    min-width: 6px;
+    min-height: 6px;
+}}
+
+scrollbar slider:hover {{
+    background-color: alpha({color4}, 0.6);
+}}
+
+/* Toolbar / pathbar */
+toolbar, .toolbar, .path-bar {{
+    background-color: mix({background}, {foreground}, 0.08);
+    color: {foreground};
+    border: none;
+}}
+
+/* Statusbar */
+statusbar {{
+    background-color: mix({background}, {foreground}, 0.08);
+    color: {color8};
+    border: none;
+}}
+
+/* Tooltip */
+tooltip, tooltip.background {{
+    background-color: {color0};
+    color: {foreground};
+    border: 1px solid alpha({color8}, 0.3);
+    border-radius: 8px;
+}}
+
+/* Selection */
+*:selected {{
+    background-color: alpha({color4}, 0.3);
+    color: {foreground};
+}}
+
+/* Links */
+*:link, button.link {{
+    color: {color5};
+}}
+
+/* Separator */
+separator {{
+    background-color: alpha({color8}, 0.15);
+    min-height: 1px;
+    min-width: 1px;
+}}
+
+/* Tabs */
+notebook header {{
+    background-color: mix({background}, {foreground}, 0.08);
+    border: none;
+}}
+
+notebook header tab {{
+    background-color: transparent;
+    color: {color8};
+    border: none;
+    padding: 4px 12px;
+}}
+
+notebook header tab:checked {{
+    color: {foreground};
+    border-bottom: 2px solid {color4};
+}}
+
+/* Switch */
+switch {{
+    background-color: alpha({color8}, 0.3);
+    border-radius: 9999px;
+    border: none;
+}}
+
+switch:checked {{
+    background-color: {color4};
+}}
+
+/* Check and radio */
+checkbutton check, radiobutton radio {{
+    background-color: alpha({color0}, 0.5);
+    border: 1px solid alpha({color8}, 0.4);
+    border-radius: 4px;
+}}
+
+checkbutton check:checked, radiobutton radio:checked {{
+    background-color: {color4};
+    color: {background};
+}}
+
+/* Progress bar */
+progressbar trough {{
+    background-color: alpha({color0}, 0.3);
+    border-radius: 9999px;
+}}
+
+progressbar progress {{
+    background-color: {color4};
+    border-radius: 9999px;
+}}
+
+/* Frame borders */
+frame > border {{
+    border: none;
+}}
+
+/* Thunar specific */
+.standard-view {{
+    background-color: mix({background}, {foreground}, 0.08);
+    border: none;
+}}
+
+/* Menubar */
+menubar {{
+    background-color: mix({background}, {foreground}, 0.08);
+    color: {foreground};
+    border: none;
+    box-shadow: none;
+    padding: 2px 4px;
+}}
+
+menubar > menuitem {{
+    color: alpha({foreground}, 0.7);
+    padding: 2px 6px;
+}}
+
+menubar > menuitem:hover {{
+    background-color: alpha({color4}, 0.2);
+    color: {foreground};
+    border-radius: 4px;
+}}

@@ -2,27 +2,45 @@
 {
     "layer": "top",
     "position": "top",
-    "height": 46,
+    "height": 40,
     "spacing": 0,
     "exclusive": true,
-    "margin-left": 5,
-    "margin-right": 5,
+    // Flush to the screen edges: this is a menu bar, not a floating card.
+    "margin-left": 0,
+    "margin-right": 0,
 
     "modules-left": [
-        "hyprland/workspaces"
+        "group/workspaces"
     ],
+    // Modules are packed into groups so each one can be drawn as a raised
+    // island with its own outline; inside an island the members are divided
+    // by hairlines, like a segmented control.
     "modules-center": [
-        "clock",
-        "custom/date"
+        "group/time"
     ],
     "modules-right": [
-        "battery",
-        "pulseaudio",
-        "custom/ram",
-        "custom/keyboard",
-        "network",
-        "bluetooth"
+        "group/status",
+        "custom/power"
     ],
+
+    "group/time": {
+        "orientation": "horizontal",
+        "modules": ["clock", "custom/date"]
+    },
+
+    "group/status": {
+        "orientation": "horizontal",
+        "modules": [
+            "custom/caffeine",
+            "battery",
+            "pulseaudio",
+            "backlight",
+            "custom/hz",
+            "custom/keyboard",
+            "network",
+            "bluetooth"
+        ]
+    },
 
     // ─── Center ────────────────────────────────────────────────────────────
 
@@ -40,12 +58,113 @@
 
     // ─── Left ──────────────────────────────────────────────────────────────
 
-    "hyprland/workspaces": {
-        "format": "{id}",
-        "on-click": "activate",
-        "on-scroll-up": "hyprctl dispatch workspace e-1",
-        "on-scroll-down": "hyprctl dispatch workspace e+1",
-        "sort-by-number": true
+    // Свои кнопки вместо hyprland/workspaces: нативный модуль шлёт Hyprland
+    // старый "dispatch workspace N", который Lua-конфиг не понимает,
+    // поэтому клик по цифре не переключал (Waybar issue #5008).
+    "group/workspaces": {
+        "orientation": "horizontal",
+        "modules": ["custom/ws1", "custom/ws2", "custom/ws3", "custom/ws4", "custom/ws5", "custom/ws6", "custom/ws7", "custom/ws8", "custom/ws9", "custom/ws10"]
+    },
+
+    "custom/ws1": {
+        "exec": "~/.config/waybar/scripts/ws.sh 1",
+        "return-type": "json",
+        "interval": "once",
+        "signal": 9,
+        "tooltip": false,
+        "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 1 })'",
+        "on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e-1\" })'",
+        "on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e+1\" })'"
+    },
+    "custom/ws2": {
+        "exec": "~/.config/waybar/scripts/ws.sh 2",
+        "return-type": "json",
+        "interval": "once",
+        "signal": 9,
+        "tooltip": false,
+        "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 2 })'",
+        "on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e-1\" })'",
+        "on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e+1\" })'"
+    },
+    "custom/ws3": {
+        "exec": "~/.config/waybar/scripts/ws.sh 3",
+        "return-type": "json",
+        "interval": "once",
+        "signal": 9,
+        "tooltip": false,
+        "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 3 })'",
+        "on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e-1\" })'",
+        "on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e+1\" })'"
+    },
+    "custom/ws4": {
+        "exec": "~/.config/waybar/scripts/ws.sh 4",
+        "return-type": "json",
+        "interval": "once",
+        "signal": 9,
+        "tooltip": false,
+        "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 4 })'",
+        "on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e-1\" })'",
+        "on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e+1\" })'"
+    },
+    "custom/ws5": {
+        "exec": "~/.config/waybar/scripts/ws.sh 5",
+        "return-type": "json",
+        "interval": "once",
+        "signal": 9,
+        "tooltip": false,
+        "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 5 })'",
+        "on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e-1\" })'",
+        "on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e+1\" })'"
+    },
+    "custom/ws6": {
+        "exec": "~/.config/waybar/scripts/ws.sh 6",
+        "return-type": "json",
+        "interval": "once",
+        "signal": 9,
+        "tooltip": false,
+        "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 6 })'",
+        "on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e-1\" })'",
+        "on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e+1\" })'"
+    },
+    "custom/ws7": {
+        "exec": "~/.config/waybar/scripts/ws.sh 7",
+        "return-type": "json",
+        "interval": "once",
+        "signal": 9,
+        "tooltip": false,
+        "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 7 })'",
+        "on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e-1\" })'",
+        "on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e+1\" })'"
+    },
+    "custom/ws8": {
+        "exec": "~/.config/waybar/scripts/ws.sh 8",
+        "return-type": "json",
+        "interval": "once",
+        "signal": 9,
+        "tooltip": false,
+        "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 8 })'",
+        "on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e-1\" })'",
+        "on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e+1\" })'"
+    },
+    "custom/ws9": {
+        "exec": "~/.config/waybar/scripts/ws.sh 9",
+        "return-type": "json",
+        "interval": "once",
+        "signal": 9,
+        "tooltip": false,
+        "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 9 })'",
+        "on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e-1\" })'",
+        "on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e+1\" })'"
+    },
+    "custom/ws10": {
+        "exec": "~/.config/waybar/scripts/ws.sh 10",
+        "return-type": "json",
+        "interval": "once",
+        "signal": 9,
+        "tooltip": false,
+        "on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 10 })'",
+        "on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e-1\" })'",
+        "on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e+1\" })'"
     },
 
     // ─── Right ─────────────────────────────────────────────────────────────
@@ -53,30 +172,47 @@
     "battery": {
         "interval": 60,
         "states": { "warning": 25, "critical": 10 },
-        "format": "{icon} {capacity}%",
-        "format-charging": "󰂄 {capacity}%",
-        "format-plugged": "󰁹 {capacity}%",
-        "format-full": "󰁹 Full",
+        "format": "{icon}  {capacity}%",
+        "format-charging": "󰂄  {capacity}%",
+        "format-plugged": "󰁹  {capacity}%",
+        "format-full": "󰁹  Full",
         "format-icons": ["󰂃", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂"],
         "tooltip-format": "{timeTo}"
     },
 
     "pulseaudio": {
-        "format": "{icon} {volume}%",
-        "format-muted": "󰝟 Muted",
+        "format": "{icon}   {volume}%",
+        "format-muted": "󰝟   Muted",
         "format-icons": { "default": ["󰕿", "󰖀", "󰕾"] },
         "scroll-step": 5,
         "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
-        "on-scroll-up": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+",
-        "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-",
+        "on-scroll-up": "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+",
+        "on-scroll-down": "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%-",
         "tooltip": false
     },
 
-    "custom/ram": {
-        "exec": "~/.config/waybar/scripts/ram.sh",
+    "backlight": {
+        "format": "{icon}   {percent}%",
+        "format-icons": ["󰃞", "󰃟", "󰃠"],
+        "on-scroll-up": "brightnessctl set 5%+",
+        "on-scroll-down": "brightnessctl set 5%-",
+        "tooltip": false
+    },
+
+    "custom/hz": {
+        "exec": "~/.config/waybar/scripts/hz.sh",
         "return-type": "json",
-        "interval": 10,
-        "tooltip": true
+        "interval": "once",
+        "signal": 11,
+        "on-click": "~/.local/bin/hypr-monitor-hz.sh --toggle"
+    },
+
+    "custom/caffeine": {
+        "exec": "~/.config/waybar/scripts/caffeine.sh",
+        "return-type": "json",
+        "interval": "once",
+        "signal": 10,
+        "on-click": "~/.config/scripts/caffeine.sh"
     },
 
     "custom/keyboard": {
@@ -89,7 +225,7 @@
 
     "network": {
         "interface": "wlan0",
-        "format-wifi": "{icon} {signalStrength}%",
+        "format-wifi": "{icon}   {signalStrength}%",
         "format-ethernet": "󰈀",
         "format-disconnected": "󰤭",
         "format-icons": ["󰤟", "󰤢", "󰤥", "󰤨"],
@@ -103,11 +239,18 @@
         "format": "󰂯",
         "format-disabled": "󰂲",
         "format-off": "󰂲",
-        "format-connected": "󰂱 {device_alias}",
-        "format-connected-battery": "󰂱 {device_alias} {device_battery_percentage}%",
+        "format-connected": "󰂱  {device_alias}",
+        "format-connected-battery": "󰂱  {device_alias}  {device_battery_percentage}%",
         "tooltip-format": "{controller_alias}\n{num_connections} connected",
         "tooltip-format-connected": "{device_enumerate}",
         "tooltip-format-enumerate-connected": "  {device_alias}",
         "on-click": "qs ipc --newest call bluetooth toggle"
+    },
+
+    "custom/power": {
+        "format": "󰐥",
+        "tooltip": true,
+        "tooltip-format": "Питание: блокировка / сон / выключение",
+        "on-click": "qs ipc --newest call power toggle"
     }
 }
