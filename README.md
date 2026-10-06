@@ -10,10 +10,10 @@ re-themes the whole desktop at once.
 
 ## Screenshots
 
-![Desktop](screenshots/screen-1.png)
-![Launcher](screenshots/screen-2.png)
-![Wallpaper picker](screenshots/screen-3.png)
-![Lock screen](screenshots/screen-4.png)
+![Desktop](screenshots/desktop.webp)
+![Launcher](screenshots/launcher.webp)
+![Wallpaper picker](screenshots/wallpapers.webp)
+![Bluetooth panel](screenshots/bluetooth.webp)
 
 ## Components
 
